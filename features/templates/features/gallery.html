@@ -1,0 +1,40 @@
+{% extends 'features/base.html' %}
+{% block title %}Gallery | Together for Our Village{% endblock %}
+{% block extra_head %}
+<!-- Fancybox CDN for lightbox effect -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" />
+{% endblock %}
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script>
+{% endblock %}
+{% block content %}
+{% include 'features/partials/hero.html' with hero_title='Gallery' hero_subtitle='Moments from our village projects and
+community life.' hero_bg_url='https://images.unsplash.com/photo-1584270354949-1c1c56d96f9c' %}
+<div class="container mx-auto px-6 py-12">
+    <div class="mb-8 text-center">
+        <a href="{% url 'features:home' %}" class="text-green-700 hover:underline">&larr; Back to Home</a>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        <!-- Example images, replace src with your own -->
+        <a data-fancybox="gallery"
+            href="https://images.pexels.com/photos/11576242/pexels-photo-11576242.jpeg?auto=compress&w=1200">
+            <img src="https://images.pexels.com/photos/11576242/pexels-photo-11576242.jpeg?auto=compress&w=400"
+                alt="Village life 1" class="rounded-lg shadow hover:shadow-lg transition object-cover w-full h-64" />
+        </a>
+        <a data-fancybox="gallery"
+            href="https://images.pexels.com/photos/6896967/pexels-photo-6896967.jpeg?auto=compress&w=1200">
+            <img src="https://images.pexels.com/photos/6896967/pexels-photo-6896967.jpeg?auto=compress&w=400"
+                alt="Village life 2" class="rounded-lg shadow hover:shadow-lg transition object-cover w-full h-64" />
+        </a>
+        <a data-fancybox="gallery"
+            href="https://images.pexels.com/photos/29520845/pexels-photo-29520845.jpeg?auto=compress&w=1200">
+            <img src="https://images.pexels.com/photos/29520845/pexels-photo-29520845.jpeg?auto=compress&w=400"
+                alt="Village life 3" class="rounded-lg shadow hover:shadow-lg transition object-cover w-full h-64" />
+        </a>
+        <!-- Add more images as needed -->
+    </div>
+    <div class="mt-8 text-center text-gray-500 text-sm">
+        Want to contribute your photos? Contact us!
+    </div>
+</div>
+{% endblock %}

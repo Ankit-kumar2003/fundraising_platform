@@ -1,0 +1,92 @@
+{% extends 'features/base.html' %}
+{% load static %}
+
+{% block extra_head %}
+<style>
+    body::before {
+        content: "";
+        background: url('https://images.unsplash.com/photo-1584270354949-1c1c56d96f9c') no-repeat center center fixed;
+        background-size: cover;
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        z-index: -1;
+        filter: brightness(0.6);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<header class="p-6 text-center">
+    <h1 class="text-4xl font-bold mb-2">Together for Our Village</h1>
+    <p class="text-xl">Our Journey of Unity, Hope, and Transformation</p>
+</header>
+
+<section class="max-w-6xl mx-auto px-6 py-12 backdrop-blur-sm bg-gray-50 bg-opacity-10 dark:bg-gray-900 dark:bg-opacity-30 rounded-2xl">
+    <h2 class="text-3xl font-bold mb-6 text-center">Our Story</h2>
+    <p class="text-lg leading-relaxed text-center">
+        We are a group of passionate villagers, students, and volunteers dedicated to improving the life of our rural
+        community. Born in this village, we've witnessed both its beauty and its hardships. With your support, we are
+        rewriting our story — one donation, one project at a time.
+    </p>
+</section>
+
+<section class="max-w-6xl mx-auto px-6 py-12 grid gap-6 sm:grid-cols-2 md:grid-cols-3">
+    <div class="transform transition hover:scale-105 bg-white bg-opacity-20 p-6 rounded-xl shadow-lg text-center">
+        <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" class="w-20 mx-auto mb-4" alt="Founder" />
+        <h3 class="text-xl font-semibold">Sita Devi</h3>
+        <p>Retired Teacher | Treasurer</p>
+    </div>
+    <div class="transform transition hover:scale-105 bg-white bg-opacity-20 p-6 rounded-xl shadow-lg text-center">
+        <img src="https://cdn-icons-png.flaticon.com/512/3135/3135789.png" class="w-20 mx-auto mb-4" alt="Volunteer" />
+        <h3 class="text-xl font-semibold">Ravi Kumar</h3>
+        <p>Student Volunteer | Social Media</p>
+    </div>
+    <div class="transform transition hover:scale-105 bg-white bg-opacity-20 p-6 rounded-xl shadow-lg text-center">
+        <img src="https://cdn-icons-png.flaticon.com/512/3135/3135823.png" class="w-20 mx-auto mb-4"
+            alt="Coordinator" />
+        <h3 class="text-xl font-semibold">Anjali Sharma</h3>
+        <p>Project Coordinator</p>
+    </div>
+</section>
+
+<section class="max-w-5xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-3 gap-4">
+    <div class="bg-white bg-opacity-20 rounded-xl p-6 text-center shadow-md">
+        <h4 class="text-2xl font-bold">Mission</h4>
+        <p class="mt-2">To create sustainable solutions for our village through community-funded projects.</p>
+    </div>
+    <div class="bg-white bg-opacity-20 rounded-xl p-6 text-center shadow-md">
+        <h4 class="text-2xl font-bold">Vision</h4>
+        <p class="mt-2">A thriving village with education, healthcare, and infrastructure for all.</p>
+    </div>
+    <div class="bg-white bg-opacity-20 rounded-xl p-6 text-center shadow-md">
+        <h4 class="text-2xl font-bold">Values</h4>
+        <p class="mt-2">Transparency, Community, Compassion, and Trust.</p>
+    </div>
+</section>
+
+<section class="max-w-4xl mx-auto px-6 py-12 text-center">
+    <h2 class="text-3xl font-bold mb-4">Meet Our Village</h2>
+    <iframe class="w-full h-64 rounded-lg" src="https://www.youtube.com/embed/_TbvtjhsHXw" title="Village Video"
+        frameborder="0" allowfullscreen></iframe>
+    <p class="mt-4 text-lg">This is our home. Every frame here tells a story of resilience, unity, and dreams coming
+        true.</p>
+</section>
+
+<section class="max-w-6xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div class="bg-white bg-opacity-20 p-6 rounded-xl">
+        <h3 class="text-xl font-bold">"This initiative changed our lives."</h3>
+        <p class="mt-2 italic">– Ramesh, Local Shopkeeper</p>
+    </div>
+    <div class="bg-white bg-opacity-20 p-6 rounded-xl">
+        <h3 class="text-xl font-bold">"I see my village growing every day."</h3>
+        <p class="mt-2 italic">– Kavita, Volunteer</p>
+    </div>
+</section>
+
+<footer class="text-center py-6 bg-white bg-opacity-10 mt-12">
+    <p class="text-sm">© 2025 Together for Our Village | Made with ❤️ in our village</p>
+</footer>
+{% endblock %}

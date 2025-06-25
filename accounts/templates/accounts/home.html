@@ -1,0 +1,27 @@
+{% extends 'accounts/base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h1 class="card-title">Welcome to the Authentication System</h1>
+                    {% if user.is_authenticated %}
+                    <p class="lead">Hello, {{ user.full_name }}!</p>
+                    <p>You are successfully logged in.</p>
+                    {% else %}
+                    <p class="lead">Please login or register to continue.</p>
+                    <div class="mt-4">
+                        <a href="{% url 'login' %}" class="btn btn-primary me-2">Login</a>
+                        <a href="{% url 'register' %}" class="btn btn-success">Register</a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

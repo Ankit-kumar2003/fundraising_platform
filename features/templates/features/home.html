@@ -1,0 +1,200 @@
+{% extends 'features/base.html' %}
+{% load static %}
+
+{% block extra_head %}
+<style>
+    .hero-bg {
+        position: relative;
+        overflow: hidden;
+        min-height: 400px;
+    }
+
+    .hero-bg img.hero-img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: 0;
+        display: none;
+    }
+
+    .hero-bg .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 1;
+    }
+
+    .hero-bg .hero-content {
+        position: relative;
+        z-index: 2;
+    }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const imageUrls = [
+            'https://images.pexels.com/photos/11576242/pexels-photo-11576242.jpeg?auto=compress&w=1200',
+            'https://images.pexels.com/photos/6896967/pexels-photo-6896967.jpeg?auto=compress&w=1200',
+            'https://images.pexels.com/photos/29520845/pexels-photo-29520845.jpeg?auto=compress&w=1200'
+        ];
+        let currentImage = 0;
+        const imgEl = document.getElementById('hero-img');
+
+        function showImage(idx) {
+            imgEl.src = imageUrls[idx];
+            imgEl.style.display = 'block';
+        }
+        function nextImage() {
+            currentImage = (currentImage + 1) % imageUrls.length;
+            showImage(currentImage);
+        }
+        // Start with first image
+        showImage(0);
+        setInterval(nextImage, 3000); // Change image every 3 seconds
+    });
+</script>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section with Sliding Images -->
+<section class="hero-bg text-white py-20 flex items-center justify-center min-h-[400px] dark:text-white">
+    <img id="hero-img" class="hero-img" style="display:none" alt="Village scene" />
+    <div class="overlay"></div>
+    <div class="container mx-auto text-center px-6 hero-content">
+        <h1 class="text-4xl md:text-6xl font-bold mb-4">Let's Build Our Future Together</h1>
+        <p class="text-lg md:text-xl mb-8">Support village development projects. Every rupee counts.</p>
+        <div class="space-x-4">
+            <a href="{% url 'features:project_list' %}"
+                class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-full">Donate Now</a>
+            <a href="#projects" class="bg-white hover:bg-gray-200 text-gray-800 font-bold py-3 px-6 rounded-full">See
+                Projects</a>
+        </div>
+    </div>
+</section>
+
+<!-- Impact Infographics Section -->
+<section class="py-12 bg-gray-50 dark:bg-gray-900">
+    <div class="container mx-auto px-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+            <div
+                class="flex flex-col items-center bg-green-50 dark:bg-gray-800 rounded-xl p-8 shadow hover:shadow-lg transition">
+                <div class="mb-4 text-green-600 text-5xl">
+                    <!-- Money icon -->
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="w-12 h-12 mx-auto">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l4 2" />
+                        <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5" fill="none" />
+                    </svg>
+                </div>
+                <h3 class="text-4xl font-bold text-green-700">₹{{ total_funds_raised|floatformat:2 }}</h3>
+                <p class="text-gray-600 mt-2">Funds Raised</p>
+            </div>
+            <div
+                class="flex flex-col items-center bg-green-50 dark:bg-gray-800 rounded-xl p-8 shadow hover:shadow-lg transition">
+                <div class="mb-4 text-green-600 text-5xl">
+                    <!-- Users icon -->
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="w-12 h-12 mx-auto">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a4 4 0 00-4-4h-1" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 20H4v-2a4 4 0 014-4h1" />
+                        <circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="1.5" fill="none" />
+                        <circle cx="17" cy="7" r="4" stroke="currentColor" stroke-width="1.5" fill="none" />
+                    </svg>
+                </div>
+                <h3 class="text-4xl font-bold text-green-700">{{ donor_count }}</h3>
+                <p class="text-gray-600 mt-2">Donors</p>
+            </div>
+            <div
+                class="flex flex-col items-center bg-green-50 dark:bg-gray-800 rounded-xl p-8 shadow hover:shadow-lg transition">
+                <div class="mb-4 text-green-600 text-5xl">
+                    <!-- Check badge icon -->
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="w-12 h-12 mx-auto">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2l4-4" />
+                        <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5" fill="none" />
+                    </svg>
+                </div>
+                <h3 class="text-4xl font-bold text-green-700">{{ projects_completed_count }}</h3>
+                <p class="text-gray-600 mt-2">Projects Completed</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Ongoing Projects Section -->
+<section id="projects" class="py-12">
+    <div class="container mx-auto px-6">
+        <h2 class="text-3xl font-bold text-center mb-8">Ongoing Projects</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for campaign in active_campaigns %}
+            <div
+                class="bg-white rounded-lg shadow-lg overflow-hidden transform hover:-translate-y-2 transition-transform duration-300">
+                {% if campaign.image %}
+                <img src="{{ campaign.image.url }}" alt="{{ campaign.title }}" class="w-full h-48 object-cover">
+                {% else %}
+                <img src="https://via.placeholder.com/400x200" alt="Placeholder" class="w-full h-48 object-cover">
+                {% endif %}
+                <div class="p-6">
+                    <h3 class="text-xl font-bold mb-2">{{ campaign.title }}</h3>
+                    <p class="text-gray-600 mb-4">{{ campaign.description|truncatewords:15 }}</p>
+                    <div class="mb-4">
+                        <div class="flex justify-between text-sm text-gray-600 mb-1">
+                            <span>Raised: ₹{{ campaign.collected_amount|floatformat:0 }}</span>
+                            <span>Goal: ₹{{ campaign.target_amount|floatformat:0 }}</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full">
+                            <div class="bg-green-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full"
+                                style="width: {{ campaign.progress_percentage|floatformat:0 }}%">{{
+                                campaign.progress_percentage|floatformat:0 }}%</div>
+                        </div>
+                    </div>
+                    <a href="{% url 'features:campaign_detail' campaign.id %}"
+                        class="w-full text-center bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full">Donate</a>
+                </div>
+            </div>
+            {% empty %}
+            <p class="col-span-full text-center text-gray-600">No active projects right now. Please check back later!
+            </p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Testimonial Section -->
+<section class="py-12 bg-green-700 text-white">
+    <div class="container mx-auto px-6 text-center">
+        <h2 class="text-3xl font-bold mb-8">What Villagers Are Saying</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="bg-green-800 p-6 rounded-lg">
+                <p class="mb-4">"Because of your help, my child now goes to a better school with proper benches. Thank
+                    you!"</p>
+                <p class="font-bold">- Ramesh Kumar, Farmer</p>
+            </div>
+            <div class="bg-green-800 p-6 rounded-lg">
+                <p class="mb-4">"The new community water pump is a blessing. We no longer have to walk miles for clean
+                    water."</p>
+                <p class="font-bold">- Sunita Devi, Homemaker</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Transparency & Trust Section -->
+<section class="py-12">
+    <div class="container mx-auto px-6 text-center">
+        <h2 class="text-3xl font-bold mb-4">Complete Transparency</h2>
+        <p class="text-gray-600 mb-8 max-w-2xl mx-auto">We believe every rupee should be accounted for. See a full log
+            of all donations and how they are spent on our transparency page.</p>
+        <a href="{% url 'features:fund_usage' %}"
+            class="bg-gray-800 hover:bg-gray-900 text-white font-bold py-3 px-6 rounded-full">View Donation Log</a>
+    </div>
+</section>
+{% endblock %}
