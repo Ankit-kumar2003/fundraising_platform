@@ -6,6 +6,8 @@ from django.utils import timezone
 from .models import Campaign, Donation, DonorProfile, Expense
 from .forms import CampaignForm, DonationForm, DonorProfileForm, ExpenseForm
 from django.db import models
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
 
 
 def home(request):
@@ -72,7 +74,24 @@ def make_donation(request, campaign_id):
             profile.last_donation_date = timezone.now()
             profile.save()
 
-            messages.success(request, "Thank you for your donation!")
+            # Send thank you email
+            subject = "Thank you for your donation!"
+            message = render_to_string(
+                "features/email/thank_you.html",
+                {"donation": donation, "campaign": campaign, "user": request.user},
+            )
+            send_mail(
+                subject,
+                "",
+                "noreply@villagefunds.com",
+                [request.user.email],
+                html_message=message,
+            )
+
+            messages.success(
+                request,
+                "Thank you for your donation! A receipt has been sent to your email.",
+            )
             return redirect("campaign_detail", campaign_id=campaign.id)
     else:
         form = DonationForm()

@@ -19,74 +19,81 @@
 {% endblock %}
 
 {% block content %}
-<header class="p-6 text-center">
-    <h1 class="text-4xl font-bold mb-2">Together for Our Village</h1>
-    <p class="text-xl">Our Journey of Unity, Hope, and Transformation</p>
+<header class="p-4 sm:p-6 text-center">
+    <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-2">Together for Our Village</h1>
+    <p class="text-base sm:text-lg md:text-xl">Our Journey of Unity, Hope, and Transformation</p>
 </header>
 
-<section class="max-w-6xl mx-auto px-6 py-12 backdrop-blur-sm bg-gray-50 bg-opacity-10 dark:bg-gray-900 dark:bg-opacity-30 rounded-2xl">
-    <h2 class="text-3xl font-bold mb-6 text-center">Our Story</h2>
-    <p class="text-lg leading-relaxed text-center">
+<section class="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 backdrop-blur-sm bg-gray-50 bg-opacity-10 dark:bg-gray-900 dark:bg-opacity-30 rounded-2xl">
+    <h2 class="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 text-center">Our Story</h2>
+    <p class="text-sm sm:text-base md:text-lg leading-relaxed text-center">
         We are a group of passionate villagers, students, and volunteers dedicated to improving the life of our rural
         community. Born in this village, we've witnessed both its beauty and its hardships. With your support, we are
         rewriting our story — one donation, one project at a time.
     </p>
 </section>
 
-<section class="max-w-6xl mx-auto px-6 py-12 grid gap-6 sm:grid-cols-2 md:grid-cols-3">
-    <div class="transform transition hover:scale-105 bg-white bg-opacity-20 p-6 rounded-xl shadow-lg text-center">
-        <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" class="w-20 mx-auto mb-4" alt="Founder" />
-        <h3 class="text-xl font-semibold">Sita Devi</h3>
-        <p>Retired Teacher | Treasurer</p>
+<section class="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+    <div class="transform transition hover:scale-105 bg-white bg-opacity-20 p-4 sm:p-6 rounded-xl shadow-lg text-center">
+        <div class="w-16 sm:w-20 h-29 sm:h-20 mx-auto mb-3 sm:mb-4 rounded-full overflow-hidden">
+            <img src="https://www.shutterstock.com/image-photo/portrait-happy-woman-indian-ethnicity-260nw-2165545909.jpg?auto=format&fit=crop&w=500&q=80"
+                 class="w-full h-full object-cover object-top"
+                 alt="Founder" />
+        </div>
+        <h3 class="text-lg sm:text-xl font-semibold">Sita Devi</h3>
+        <p class="text-sm sm:text-base">Retired Teacher | Treasurer</p>
     </div>
-    <div class="transform transition hover:scale-105 bg-white bg-opacity-20 p-6 rounded-xl shadow-lg text-center">
-        <img src="https://cdn-icons-png.flaticon.com/512/3135/3135789.png" class="w-20 mx-auto mb-4" alt="Volunteer" />
-        <h3 class="text-xl font-semibold">Ravi Kumar</h3>
-        <p>Student Volunteer | Social Media</p>
+        
+    <div class="transform transition hover:scale-105 bg-white bg-opacity-20 p-4 sm:p-6 rounded-xl shadow-lg text-center">
+        <img src="https://cdn-icons-png.flaticon.com/512/3135/3135789.png" class="w-16 sm:w-20 mx-auto mb-3 sm:mb-4" alt="Volunteer" />
+        <h3 class="text-lg sm:text-xl font-semibold">Ravi Kumar</h3>
+        <p class="text-sm sm:text-base">Student Volunteer | Social Media</p>
     </div>
-    <div class="transform transition hover:scale-105 bg-white bg-opacity-20 p-6 rounded-xl shadow-lg text-center">
-        <img src="https://cdn-icons-png.flaticon.com/512/3135/3135823.png" class="w-20 mx-auto mb-4"
+    <div class="transform transition hover:scale-105 bg-white bg-opacity-20 p-4 sm:p-6 rounded-xl shadow-lg text-center sm:col-span-2 lg:col-span-1">
+        <img src="https://cdn-icons-png.flaticon.com/512/3135/3135823.png" class="w-16 sm:w-20 mx-auto mb-3 sm:mb-4"
             alt="Coordinator" />
-        <h3 class="text-xl font-semibold">Anjali Sharma</h3>
-        <p>Project Coordinator</p>
+        <h3 class="text-lg sm:text-xl font-semibold">Anjali Sharma</h3>
+        <p class="text-sm sm:text-base">Project Coordinator</p>
     </div>
 </section>
 
-<section class="max-w-5xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-3 gap-4">
-    <div class="bg-white bg-opacity-20 rounded-xl p-6 text-center shadow-md">
-        <h4 class="text-2xl font-bold">Mission</h4>
-        <p class="mt-2">To create sustainable solutions for our village through community-funded projects.</p>
+<section class="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-12 grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+    <div class="bg-white bg-opacity-20 rounded-xl p-4 sm:p-6 text-center shadow-md">
+        <h4 class="text-xl sm:text-2xl font-bold">Mission</h4>
+        <p class="mt-2 text-sm sm:text-base">To create sustainable solutions for our village through community-funded projects.</p>
     </div>
-    <div class="bg-white bg-opacity-20 rounded-xl p-6 text-center shadow-md">
-        <h4 class="text-2xl font-bold">Vision</h4>
-        <p class="mt-2">A thriving village with education, healthcare, and infrastructure for all.</p>
+    <div class="bg-white bg-opacity-20 rounded-xl p-4 sm:p-6 text-center shadow-md">
+        <h4 class="text-xl sm:text-2xl font-bold">Vision</h4>
+        <p class="mt-2 text-sm sm:text-base">A thriving village with education, healthcare, and infrastructure for all.</p>
     </div>
-    <div class="bg-white bg-opacity-20 rounded-xl p-6 text-center shadow-md">
-        <h4 class="text-2xl font-bold">Values</h4>
-        <p class="mt-2">Transparency, Community, Compassion, and Trust.</p>
+    <div class="bg-white bg-opacity-20 rounded-xl p-4 sm:p-6 text-center shadow-md">
+        <h4 class="text-xl sm:text-2xl font-bold">Values</h4>
+        <p class="mt-2 text-sm sm:text-base">Transparency, Community, Compassion, and Trust.</p>
     </div>
 </section>
 
-<section class="max-w-4xl mx-auto px-6 py-12 text-center">
-    <h2 class="text-3xl font-bold mb-4">Meet Our Village</h2>
-    <iframe class="w-full h-64 rounded-lg" src="https://www.youtube.com/embed/_TbvtjhsHXw" title="Village Video"
-        frameborder="0" allowfullscreen></iframe>
-    <p class="mt-4 text-lg">This is our home. Every frame here tells a story of resilience, unity, and dreams coming
+<section class="max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-12 text-center">
+    <h2 class="text-2xl sm:text-3xl font-bold mb-3 sm:mb-4">Meet Our Village</h2>
+    <div class="relative w-full" style="padding-bottom: 56.25%;">
+        <iframe class="absolute top-0 left-0 w-full h-full rounded-lg" src="https://www.youtube.com/embed/HkuKHwetV6Q" title="Village Video"
+            frameborder="0" allowfullscreen></iframe>
+    </div>
+    <p class="mt-3 sm:mt-4 text-sm sm:text-base md:text-lg">This is our home. Every frame here tells a story of resilience, unity, and dreams coming
         true.</p>
 </section>
 
-<section class="max-w-6xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-2 gap-6">
-    <div class="bg-white bg-opacity-20 p-6 rounded-xl">
-        <h3 class="text-xl font-bold">"This initiative changed our lives."</h3>
-        <p class="mt-2 italic">– Ramesh, Local Shopkeeper</p>
+<section class="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+    <div class="bg-white bg-opacity-20 p-4 sm:p-6 rounded-xl">
+        <h3 class="text-lg sm:text-xl font-bold">"This initiative changed our lives."</h3>
+        <p class="mt-2 italic text-sm sm:text-base">– Ramesh, Local Shopkeeper</p>
     </div>
-    <div class="bg-white bg-opacity-20 p-6 rounded-xl">
-        <h3 class="text-xl font-bold">"I see my village growing every day."</h3>
-        <p class="mt-2 italic">– Kavita, Volunteer</p>
+    <div class="bg-white bg-opacity-20 p-4 sm:p-6 rounded-xl">
+        <h3 class="text-lg sm:text-xl font-bold">"I see my village growing every day."</h3>
+        <p class="mt-2 italic text-sm sm:text-base">– Kavita, Volunteer</p>
     </div>
 </section>
 
-<footer class="text-center py-6 bg-white bg-opacity-10 mt-12">
-    <p class="text-sm">© 2025 Together for Our Village | Made with ❤️ in our village</p>
+<footer class="text-center py-4 sm:py-6 bg-white bg-opacity-10 mt-8 sm:mt-12">
+    <p class="text-xs sm:text-sm">© 2025 Together for Our Village | Made with ❤️ for our village</p>
 </footer>
 {% endblock %}

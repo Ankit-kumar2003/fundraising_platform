@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+</head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thank You for Your Donation!</title>
+    <style>
+        @media only screen and (max-width: 600px) {
+            body {
+                padding: 0 !important;
+            }
+            .container {
+                width: 100% !important;
+                padding: 16px !important;
+            }
+        }
+    </style>
+</head>
+
+<body style="font-family: Arial, sans-serif; background: #f9f9f9; color: #222; padding: 0; margin: 0;">
+    <div class="container"
+        style="max-width: 600px; width: 100%; margin: 40px auto; background: #fff; border-radius: 8px; box-shadow: 0 2px 8px #e0e0e0; padding: 32px; box-sizing: border-box;">
+        <h2 style="color: #22c55e;">Thank You for Your Donation!</h2>
+        <p>Dear {{ user.full_name }},</p>
+        <p>We sincerely appreciate your generous contribution to <strong>{{ campaign.title }}</strong>.</p>
+        <h3>Donation Details</h3>
+        <ul>
+            <li><strong>Amount:</strong> ₹{{ donation.amount }}</li>
+            <li><strong>Date:</strong> {{ donation.donation_date|date:'F j, Y, H:i' }}</li>
+            <li><strong>Donation Type:</strong> {% if donation.anonymous %}Silent (Anonymous){% else %}Public{% endif %}
+            </li>
+        </ul>
+        <p>Your support helps us make a real difference in our village community.</p>
+        <p>Thank you again for your kindness!</p>
+        <p style="margin-top: 32px; color: #888; font-size: 0.9em;">This is an automated message from Together for Our
+            Village.</p>
+    </div>
+</body>
+
+</html>

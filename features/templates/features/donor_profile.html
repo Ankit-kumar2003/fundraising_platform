@@ -1,12 +1,12 @@
 {% extends 'features/base.html' %}
 {% block title %}My Profile{% endblock %}
 {% block content %}
-<div class="max-w-4xl mx-auto py-10 px-4">
-    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg flex flex-col md:flex-row overflow-hidden">
-        <!-- Sidebar -->
-        <div
-            class="md:w-1/3 bg-gradient-to-b from-green-600 to-green-400 dark:from-green-700 dark:to-green-500 flex flex-col items-center justify-center p-8 text-white">
-            <div class="w-28 h-28 rounded-full overflow-hidden shadow-lg border-4 border-white mb-4">
+<div class="max-w-3xl mx-auto py-10 px-2">
+    <!-- Banner/Header -->
+    <div
+        class="relative h-40 rounded-t-2xl bg-gradient-to-r from-green-600 to-green-400 dark:from-green-700 dark:to-green-500 shadow-lg flex items-end">
+        <div class="absolute left-1/2 transform -translate-x-1/2 translate-y-1/2 z-10">
+            <div class="w-32 h-32 rounded-full overflow-hidden shadow-lg border-4 border-white dark:border-gray-900">
                 {% if profile.photo %}
                 <img src="{{ profile.photo.url }}" alt="Profile Photo" class="w-full h-full object-cover">
                 {% else %}
@@ -14,122 +14,242 @@
                     alt="Profile Picture" class="w-full h-full object-cover">
                 {% endif %}
             </div>
-            <h2 class="text-2xl font-bold mb-1">{{ profile.full_name }}</h2>
-            <p class="text-green-100 mb-2 flex items-center"><svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor"
-                    stroke-width="2" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M12 8c-1.657 0-3 1.343-3 3s1.343 3 3 3 3-1.343 3-3-1.343-3-3-3z" />
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M19.4 15a7.963 7.963 0 01-2.4 2.4M4.6 15a7.963 7.963 0 002.4 2.4M12 4v1m0 14v1m8-8h-1M5 12H4" />
-                </svg>Joined {{ profile.user.date_joined|date:'F j, Y' }}</p>
-            <button
-                class="mt-4 px-4 py-2 bg-white text-green-700 font-semibold rounded-full shadow hover:bg-green-100 transition"
-                onclick="document.getElementById('editProfileModal').classList.remove('hidden')">Edit
-                Profile</button>
         </div>
-        <!-- Main Content -->
-        <div class="md:w-2/3 p-8 flex flex-col gap-8">
-            <!-- User Info -->
-            <div>
-                <h3 class="text-lg font-semibold text-green-700 mb-4 flex items-center"><svg
-                        class="w-5 h-5 mr-2 text-green-600" fill="none" stroke="currentColor" stroke-width="2"
+    </div>
+    <!-- Card Container -->
+    <div class="bg-white dark:bg-gray-800 rounded-b-2xl shadow-lg pt-20 pb-8 px-6 mt-0 animate-fade-in">
+        <!-- Profile Completion Progress Bar -->
+        <div class="mb-6">
+            <div class="flex justify-between items-center mb-1">
+                <span class="text-sm font-medium text-green-700">Profile Completion</span>
+                <span class="text-xs text-gray-500">80%</span> <!-- Placeholder, can be dynamic -->
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                <div class="bg-green-600 h-2.5 rounded-full" style="width: 80%"></div>
+            </div>
+        </div>
+        <!-- Name and Edit Button -->
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6 gap-2">
+            <div class="text-center md:text-left">
+                <h2 class="text-2xl font-bold text-green-700">{{ profile.full_name }}</h2>
+                <p class="text-gray-500 dark:text-gray-300 flex items-center justify-center md:justify-start gap-1">
+                    <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" stroke-width="2"
                         viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M16 7a4 4 0 01-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                    </svg>Contact Information</h3>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-gray-700 dark:text-gray-200">
-                    <div><span class="font-semibold">Email:</span> {{ profile.user.email }}</div>
-                    <div><span class="font-semibold">Phone:</span> {{ profile.phone_number|default:'N/A' }}</div>
-                    <div class="sm:col-span-2"><span class="font-semibold">Address:</span> {{
-                        profile.address|default:'N/A' }}</div>
-                    <div><span class="font-semibold">PAN:</span> {{ profile.pan_number|default:'N/A' }}</div>
-                </div>
+                            d="M12 8c-1.657 0-3 1.343-3 3s1.343 3 3 3 3-1.343 3-3-1.343-3-3-3z" />
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M19.4 15a7.963 7.963 0 01-2.4 2.4M4.6 15a7.963 7.963 0 002.4 2.4M12 4v1m0 14v1m8-8h-1M5 12H4" />
+                    </svg>
+                    Joined {{ profile.user.date_joined|date:'F j, Y' }}
+                </p>
             </div>
-            <!-- Donation Stats -->
-            <div>
-                <h3 class="text-lg font-semibold text-green-700 mb-4 flex items-center"><svg
-                        class="w-5 h-5 mr-2 text-green-600" fill="none" stroke="currentColor" stroke-width="2"
-                        viewBox="0 0 24 24">
+            <button
+                class="mt-2 md:mt-0 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-full font-semibold shadow transition"
+                onclick="document.getElementById('editProfileModal').classList.remove('hidden')">Edit Profile</button>
+        </div>
+        <!-- Tabs -->
+        <div class="mb-8 border-b border-gray-200 dark:border-gray-700">
+            <nav class="flex space-x-4" aria-label="Tabs">
+                <button id="tab-btn-info" class="px-3 py-2 text-sm font-medium focus:outline-none"
+                    onclick="showTab('info')">Info</button>
+                <button id="tab-btn-donations" class="px-3 py-2 text-sm font-medium focus:outline-none"
+                    onclick="showTab('donations')">Donations</button>
+                <button id="tab-btn-settings" class="px-3 py-2 text-sm font-medium focus:outline-none"
+                    onclick="showTab('settings')">Settings</button>
+            </nav>
+        </div>
+        <!-- Tab Content -->
+        <div id="tab-info">
+            <!-- Info Card -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
+                <div class="flex items-center gap-2"><svg class="w-5 h-5 text-green-600" fill="none"
+                        stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M16 7a4 4 0 01-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg><span class="font-semibold">Email:</span> {{ profile.user.email }}</div>
+                <div class="flex items-center gap-2"><svg class="w-5 h-5 text-green-600" fill="none"
+                        stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 10h2l1 2h13" />
+                        <circle cx="7" cy="21" r="1" />
+                        <circle cx="20" cy="21" r="1" />
+                    </svg><span class="font-semibold">Phone:</span> {{ profile.phone_number|default:'N/A' }}</div>
+                <div class="flex items-center gap-2 sm:col-span-2"><svg class="w-5 h-5 text-green-600" fill="none"
+                        stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a4 4 0 00-4-4h-1" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 20H4v-2a4 4 0 014-4h1" />
+                        <circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="1.5" fill="none" />
+                        <circle cx="17" cy="7" r="4" stroke="currentColor" stroke-width="1.5" fill="none" />
+                    </svg><span class="font-semibold">Address:</span> {{ profile.address|default:'N/A' }}</div>
+                <div class="flex items-center gap-2"><svg class="w-5 h-5 text-green-600" fill="none"
+                        stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round"
                             d="M12 8c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4z" />
                         <path stroke-linecap="round" stroke-linejoin="round"
                             d="M2 12c0-5.523 4.477-10 10-10s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12z" />
-                    </svg>Donation Stats</h3>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-gray-700 dark:text-gray-200">
-                    <div><span class="font-semibold">Total Donated:</span> ₹{{ profile.total_donations|default:'0.00' }}
+                    </svg><span class="font-semibold">PAN:</span> {{ profile.pan_number|default:'N/A' }}</div>
+            </div>
+            <!-- Donation Stats Card -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
+                <div class="bg-green-50 dark:bg-gray-900 rounded-xl p-6 shadow text-center animate-fade-in-up">
+                    <div class="text-3xl font-bold text-green-700 mb-2">₹{{ profile.total_donations|default:'0.00' }}
                     </div>
-                    <div><span class="font-semibold">Number of Donations:</span> {{ donations|length|default:'0' }}
-                    </div>
-                    {% if profile.last_donation_date %}
-                    <div class="sm:col-span-2"><span class="font-semibold">Last Donation:</span> {{
-                        profile.last_donation_date|date:'F j, Y' }}</div>
-                    {% endif %}
+                    <div class="text-gray-600 dark:text-gray-300">Total Donated</div>
+                </div>
+                <div class="bg-green-50 dark:bg-gray-900 rounded-xl p-6 shadow text-center animate-fade-in-up">
+                    <div class="text-3xl font-bold text-green-700 mb-2">{{ donations|length|default:'0' }}</div>
+                    <div class="text-gray-600 dark:text-gray-300">Donations</div>
+                </div>
+                <div class="bg-green-50 dark:bg-gray-900 rounded-xl p-6 shadow text-center animate-fade-in-up">
+                    <div class="text-lg font-bold text-green-700 mb-2">{% if profile.last_donation_date %}{{
+                        profile.last_donation_date|date:'F j, Y' }}{% else %}N/A{% endif %}</div>
+                    <div class="text-gray-600 dark:text-gray-300">Last Donation</div>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- Donation History Table -->
-    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg mt-10 p-8">
-        <h3 class="text-lg font-semibold text-green-700 mb-6 flex items-center"><svg class="w-5 h-5 mr-2 text-green-600"
-                fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M3 10h2l1 2h13" />
-                <circle cx="7" cy="21" r="1" />
-                <circle cx="20" cy="21" r="1" />
-            </svg>Donation History</h3>
-        {% if donations %}
-        <div class="overflow-x-auto">
-            <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                <thead class="bg-green-100 dark:bg-green-900">
-                    <tr>
-                        <th class="px-4 py-2 text-left text-xs font-semibold text-green-700 uppercase">Date</th>
-                        <th class="px-4 py-2 text-left text-xs font-semibold text-green-700 uppercase">Campaign</th>
-                        <th class="px-4 py-2 text-left text-xs font-semibold text-green-700 uppercase">Amount</th>
-                        <th class="px-4 py-2 text-left text-xs font-semibold text-green-700 uppercase">Payment</th>
-                        <th class="px-4 py-2 text-left text-xs font-semibold text-green-700 uppercase">Status</th>
-                    </tr>
-                </thead>
-                <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-100 dark:divide-gray-700">
-                    {% for donation in donations %}
-                    <tr>
-                        <td class="px-4 py-2 whitespace-nowrap">{{ donation.donation_date|date:'d M Y, H:i' }}</td>
-                        <td class="px-4 py-2 whitespace-nowrap">{{ donation.campaign.title }}</td>
-                        <td class="px-4 py-2 whitespace-nowrap">₹{{ donation.amount }}</td>
-                        <td class="px-4 py-2 whitespace-nowrap">{{ donation.get_payment_method_display }}</td>
-                        <td class="px-4 py-2 whitespace-nowrap">
-                            {% if donation.status == 'COMPLETED' %}
-                            <span
-                                class="inline-block px-2 py-1 text-xs font-semibold rounded bg-green-100 text-green-700">Completed</span>
-                            {% elif donation.status == 'PENDING' %}
-                            <span
-                                class="inline-block px-2 py-1 text-xs font-semibold rounded bg-yellow-100 text-yellow-700">Pending</span>
-                            {% else %}
-                            <span
-                                class="inline-block px-2 py-1 text-xs font-semibold rounded bg-red-100 text-red-700">Failed</span>
-                            {% endif %}
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+        <div id="tab-donations" class="hidden">
+            <!-- Donation History Table (already implemented) -->
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                    <thead class="bg-green-100 dark:bg-green-900">
+                        <tr>
+                            <th class="px-4 py-2 text-left text-xs font-semibold text-green-700 uppercase">Date</th>
+                            <th class="px-4 py-2 text-left text-xs font-semibold text-green-700 uppercase">Campaign</th>
+                            <th class="px-4 py-2 text-left text-xs font-semibold text-green-700 uppercase">Amount</th>
+                            <th class="px-4 py-2 text-left text-xs font-semibold text-green-700 uppercase">Payment</th>
+                            <th class="px-4 py-2 text-left text-xs font-semibold text-green-700 uppercase">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-100 dark:divide-gray-700">
+                        {% for donation in donations %}
+                        <tr>
+                            <td class="px-4 py-2 whitespace-nowrap">{{ donation.donation_date|date:'d M Y, H:i' }}</td>
+                            <td class="px-4 py-2 whitespace-nowrap">{{ donation.campaign.title }}</td>
+                            <td class="px-4 py-2 whitespace-nowrap">₹{{ donation.amount }}</td>
+                            <td class="px-4 py-2 whitespace-nowrap">{{ donation.get_payment_method_display }}</td>
+                            <td class="px-4 py-2 whitespace-nowrap">
+                                {% if donation.status == 'COMPLETED' %}
+                                <span
+                                    class="inline-block px-2 py-1 text-xs font-semibold rounded bg-green-100 text-green-700">Completed</span>
+                                {% elif donation.status == 'PENDING' %}
+                                <span
+                                    class="inline-block px-2 py-1 text-xs font-semibold rounded bg-yellow-100 text-yellow-700">Pending</span>
+                                {% else %}
+                                <span
+                                    class="inline-block px-2 py-1 text-xs font-semibold rounded bg-red-100 text-red-700">Failed</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
-        {% else %}
-        <div class="text-gray-500 text-center py-8">No donations yet. Start making a difference today!</div>
-        {% endif %}
+        <div id="tab-settings" class="hidden">
+            <div class="text-gray-500 text-center py-8">Settings coming soon!</div>
+        </div>
+    </div>
+    <!-- Edit Profile Modal -->
+    <div id="editProfileModal"
+        class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 hidden">
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 w-full max-w-md relative">
+            <button class="absolute top-2 right-2 text-gray-400 hover:text-red-500 text-2xl font-bold"
+                onclick="document.getElementById('editProfileModal').classList.add('hidden')">&times;</button>
+            <h3 class="text-xl font-semibold mb-4 text-green-700 dark:text-green-400">Edit Profile</h3>
+            <form method="post" enctype="multipart/form-data" class="space-y-4">
+                {% csrf_token %}
+
+                <!-- Phone Number Field -->
+                <div>
+                    <label for="{{ form.phone_number.id_for_label }}"
+                        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        {{ form.phone_number.label }}
+                    </label>
+                    <input type="text" name="{{ form.phone_number.name }}" id="{{ form.phone_number.id_for_label }}"
+                        value="{{ form.phone_number.value|default:'' }}"
+                        class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-green-500 focus:border-green-500 dark:focus:ring-green-400 dark:focus:border-green-400"
+                        placeholder="Enter your phone number">
+                    {% if form.phone_number.errors %}
+                    <div class="text-red-500 text-xs mt-1">{{ form.phone_number.errors.0 }}</div>
+                    {% endif %}
+                </div>
+
+                <!-- Address Field -->
+                <div>
+                    <label for="{{ form.address.id_for_label }}"
+                        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        {{ form.address.label }}
+                    </label>
+                    <textarea name="{{ form.address.name }}" id="{{ form.address.id_for_label }}" rows="3"
+                        class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-green-500 focus:border-green-500 dark:focus:ring-green-400 dark:focus:border-green-400"
+                        placeholder="Enter your address">{{ form.address.value|default:'' }}</textarea>
+                    {% if form.address.errors %}
+                    <div class="text-red-500 text-xs mt-1">{{ form.address.errors.0 }}</div>
+                    {% endif %}
+                </div>
+
+                <!-- PAN Number Field -->
+                <div>
+                    <label for="{{ form.pan_number.id_for_label }}"
+                        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        {{ form.pan_number.label }}
+                    </label>
+                    <input type="text" name="{{ form.pan_number.name }}" id="{{ form.pan_number.id_for_label }}"
+                        value="{{ form.pan_number.value|default:'' }}"
+                        class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-green-500 focus:border-green-500 dark:focus:ring-green-400 dark:focus:border-green-400"
+                        placeholder="Enter your PAN number (optional)">
+                    {% if form.pan_number.errors %}
+                    <div class="text-red-500 text-xs mt-1">{{ form.pan_number.errors.0 }}</div>
+                    {% endif %}
+                </div>
+
+                <!-- Photo Upload Field -->
+                <div>
+                    <label for="{{ form.photo.id_for_label }}"
+                        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        {{ form.photo.label }}
+                    </label>
+                    <input type="file" name="{{ form.photo.name }}" id="{{ form.photo.id_for_label }}" accept="image/*"
+                        class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-green-500 focus:border-green-500 dark:focus:ring-green-400 dark:focus:border-green-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100 dark:file:bg-gray-600 dark:file:text-gray-200">
+                    {% if form.photo.errors %}
+                    <div class="text-red-500 text-xs mt-1">{{ form.photo.errors.0 }}</div>
+                    {% endif %}
+                    {% if profile.photo %}
+                    <div class="mt-2">
+                        <p class="text-xs text-gray-500 dark:text-gray-400">Current photo:</p>
+                        <img src="{{ profile.photo.url }}" alt="Current profile photo"
+                            class="w-16 h-16 rounded-full object-cover mt-1">
+                    </div>
+                    {% endif %}
+                </div>
+
+                <button type="submit"
+                    class="w-full mt-6 bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full transition-colors">Save
+                    Changes</button>
+            </form>
+        </div>
     </div>
 </div>
-<!-- Edit Profile Modal -->
-<div id="editProfileModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 hidden">
-    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 w-full max-w-md relative">
-        <button class="absolute top-2 right-2 text-gray-400 hover:text-red-500 text-2xl font-bold"
-            onclick="document.getElementById('editProfileModal').classList.add('hidden')">&times;</button>
-        <h3 class="text-xl font-semibold mb-4 text-green-700">Edit Profile</h3>
-        <form method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit"
-                class="w-full mt-4 bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full">Save
-                Changes</button>
-        </form>
-    </div>
-</div>
+<!-- Tab switching script -->
+<script>
+    function showTab(tab) {
+        // Hide all tab contents
+        document.getElementById('tab-info').classList.add('hidden');
+        document.getElementById('tab-donations').classList.add('hidden');
+        document.getElementById('tab-settings').classList.add('hidden');
+        // Remove active styles from all buttons
+        document.getElementById('tab-btn-info').classList.remove('text-green-700', 'border-b-2', 'border-green-600');
+        document.getElementById('tab-btn-info').classList.add('text-gray-500', 'hover:text-green-700');
+        document.getElementById('tab-btn-donations').classList.remove('text-green-700', 'border-b-2', 'border-green-600');
+        document.getElementById('tab-btn-donations').classList.add('text-gray-500', 'hover:text-green-700');
+        document.getElementById('tab-btn-settings').classList.remove('text-green-700', 'border-b-2', 'border-green-600');
+        document.getElementById('tab-btn-settings').classList.add('text-gray-500', 'hover:text-green-700');
+        // Show the selected tab content
+        document.getElementById('tab-' + tab).classList.remove('hidden');
+        // Add active styles to the selected button
+        document.getElementById('tab-btn-' + tab).classList.add('text-green-700', 'border-b-2', 'border-green-600');
+        document.getElementById('tab-btn-' + tab).classList.remove('text-gray-500', 'hover:text-green-700');
+    }
+    // Set default active tab on page load
+    showTab('info');
+</script>
 {% endblock %}
