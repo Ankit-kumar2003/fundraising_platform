@@ -29,8 +29,7 @@
         <ul>
             <li><strong>Amount:</strong> ₹{{ donation.amount }}</li>
             <li><strong>Date:</strong> {{ donation.donation_date|date:'F j, Y, H:i' }}</li>
-            <li><strong>Donation Type:</strong> {% if donation.anonymous %}Silent (Anonymous){% else %}Public{% endif %}
-            </li>
+            <li><strong>Donation Visibility:</strong> Public</li>
         </ul>
         <p>Your support helps us make a real difference in our village community.</p>
         <p>Thank you again for your kindness!</p>

@@ -1,25 +1,97 @@
 {% extends 'accounts/base.html' %}
 {% load crispy_forms_tags %}
+{% load static %}
 
 {% block title %}Register{% endblock %}
 
 {% block content %}
-<div class="row justify-content-center">
-    <div class="col-md-6">
-        <div class="card">
-            <div class="card-header">
-                <h3 class="text-center">Register</h3>
+<!-- Community hands background for register page -->
+<div class="fixed inset-0 w-full h-full opacity-35 pointer-events-none z-0">
+    <img src="{% static 'images/community-hands.svg' %}" alt="Community Hands" class="w-full h-full object-contain">
+</div>
+<div class="flex justify-center min-h-[calc(100vh-200px)] items-center relative z-10">
+    <div class="w-full max-w-md transform hover:scale-105 transition-all duration-300 relative z-20">
+        <div class="bg-white/80 backdrop-blur-lg shadow-2xl rounded-2xl overflow-hidden border border-white/20">
+            <div class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-6">
+                <h3 class="text-2xl font-bold text-center">Join Our Community</h3>
+                <p class="text-indigo-100 text-center mt-1">Start funding dreams & building futures</p>
+                <p class="text-purple-200 text-center mt-2 text-sm">🤝 Be part of a movement that transforms lives through collective funding</p>
+                <p class="text-purple-100 text-center mt-1 text-xs">✨ Free to join • Instant impact • Global community</p>
             </div>
-            <div class="card-body">
-                <form method="post">
+            <div class="px-6 py-8">
+                <form method="post" class="space-y-6">
                     {% csrf_token %}
-                    {{ form|crispy }}
-                    <div class="d-grid gap-2">
-                        <button type="submit" class="btn btn-primary">Register</button>
+                    {% for field in form %}
+                        <div>
+                            <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                {{ field.label }}
+                                {% if field.field.required %}
+                                    <span class="text-red-500">*</span>
+                                {% endif %}
+                            </label>
+                            {{ field }}
+                            {% if field.errors %}
+                                <div class="mt-1 text-sm text-red-600">
+                                    {% for error in field.errors %}
+                                        <p>{{ error }}</p>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            {% if field.help_text %}
+                                <p class="mt-1 text-sm text-gray-500">{{ field.help_text }}</p>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                    <div>
+                        <button type="submit" class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-3 px-4 rounded-xl font-semibold hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-4 focus:ring-indigo-300 transform hover:scale-105 transition-all duration-200 shadow-lg">
+                            Create Account
+                        </button>
                     </div>
                 </form>
-                <div class="text-center mt-3">
-                    <p>Already have an account? <a href="{% url 'login' %}">Login here</a></p>
+
+                <div class="text-center mt-6">
+                    <a href="{% url 'features:home' %}" class="inline-block bg-gradient-to-r from-gray-50 to-gray-100 text-gray-700 border border-gray-200 py-2 px-6 rounded-xl font-medium hover:from-gray-100 hover:to-gray-200 focus:outline-none focus:ring-4 focus:ring-gray-200 transform hover:scale-105 transition-all duration-200 shadow-md">
+                        Continue Browsing
+                    </a>
+                </div>
+
+                <!-- Member Benefits -->
+                <div class="bg-gradient-to-r from-purple-50 to-indigo-50 rounded-xl p-4 mt-6 border border-purple-100">
+                    <h4 class="text-center text-sm font-semibold text-gray-700 mb-3">🎯 Why Join Us?</h4>
+                    <div class="space-y-2 text-xs text-gray-600">
+                        <div class="flex items-center">
+                            <span class="text-green-500 mr-2">✓</span>
+                            <span>Fund projects that matter to you</span>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="text-green-500 mr-2">✓</span>
+                            <span>Connect with like-minded changemakers</span>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="text-green-500 mr-2">✓</span>
+                            <span>Track your impact in real-time</span>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="text-green-500 mr-2">✓</span>
+                            <span>Access exclusive funding opportunities</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Success Story -->
+                <div class="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-xl p-4 mt-4 border border-yellow-100">
+                    <div class="text-center">
+                        <div class="text-2xl mb-2">💡</div>
+                        <p class="text-xs text-gray-600 italic">"Thanks to this platform, I funded my village's first school. Now 200+ children have access to education!"</p>
+                        <p class="text-xs text-gray-500 mt-2">- Sarah M., Community Leader</p>
+                    </div>
+                </div>
+
+                <div class="text-center mt-8">
+                    <p class="text-sm text-gray-600">
+                        Already have an account? 
+                        <a href="{% url 'login' %}" class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 font-semibold transition-all duration-200">Sign In</a>
+                    </p>
                 </div>
             </div>
         </div>

@@ -20,27 +20,9 @@ class CampaignForm(forms.ModelForm):
 
 
 class DonationForm(forms.ModelForm):
-    VISIBILITY_CHOICES = [
-        (False, "Donate Silently (Anonymous)"),
-        (True, "Donate Publicly"),
-    ]
-    donate_publicly = forms.ChoiceField(
-        choices=VISIBILITY_CHOICES,
-        widget=forms.RadioSelect,
-        label="Donation Visibility",
-    )
-
     class Meta:
         model = Donation
-        fields = ["amount", "payment_method", "donate_publicly"]
-
-    def save(self, commit=True):
-        instance = super().save(commit=False)
-        # Set the anonymous field based on the user's choice
-        instance.anonymous = not bool(int(self.cleaned_data["donate_publicly"]))
-        if commit:
-            instance.save()
-        return instance
+        fields = ["amount", "payment_method"]
 
     def clean_amount(self):
         amount = self.cleaned_data.get("amount")

@@ -41,7 +41,7 @@ def home(request):
 def campaign_detail(request, campaign_id):
     campaign = get_object_or_404(Campaign, pk=campaign_id)
     donations = Donation.objects.filter(
-        campaign=campaign, status="COMPLETED", anonymous=False
+        campaign=campaign, status="COMPLETED"
     ).order_by("-donation_date")[:10]
 
     context = {
@@ -62,19 +62,23 @@ def make_donation(request, campaign_id):
             donation = form.save(commit=False)
             donation.donor = request.user
             donation.campaign = campaign
+            # Ensure initial status is pending until payment is confirmed
+            donation.status = "PENDING"
             donation.save()
 
-            # Update campaign collected amount
+            # Treat as immediate confirmation for now
+            donation.status = "COMPLETED"
+            donation.transaction_id = f"OFFLINE-{donation.id}"
+            donation.save()
+
             campaign.collected_amount += donation.amount
             campaign.save()
 
-            # Update donor profile
             profile, created = DonorProfile.objects.get_or_create(user=request.user)
             profile.total_donations += donation.amount
             profile.last_donation_date = timezone.now()
             profile.save()
 
-            # Send thank you email
             subject = "Thank you for your donation!"
             message = render_to_string(
                 "features/email/thank_you.html",
@@ -88,11 +92,8 @@ def make_donation(request, campaign_id):
                 html_message=message,
             )
 
-            messages.success(
-                request,
-                "Thank you for your donation! A receipt has been sent to your email.",
-            )
-            return redirect("campaign_detail", campaign_id=campaign.id)
+            messages.success(request, "Thank you for your donation!")
+            return redirect("features:campaign_detail", campaign_id=campaign.id)
     else:
         form = DonationForm()
 
@@ -101,10 +102,26 @@ def make_donation(request, campaign_id):
     )
 
 
+
+
 @login_required
 def donor_profile(request):
     profile, created = DonorProfile.objects.get_or_create(user=request.user)
     donations = Donation.objects.filter(donor=request.user).order_by("-donation_date")
+    donations_completed_count = Donation.objects.filter(
+        donor=request.user, status="COMPLETED"
+    ).count()
+
+    # Compute profile completion percentage based on filled fields
+    filled = 0
+    total = 3  # phone_number, address, photo
+    if getattr(profile, "phone_number", None):
+        filled += 1
+    if getattr(profile, "address", None):
+        filled += 1
+    if getattr(profile, "photo", None):
+        filled += 1
+    profile_completion = round((filled / total) * 100) if total else 0
 
     if request.method == "POST":
         form = DonorProfileForm(request.POST, request.FILES, instance=profile)
@@ -119,6 +136,8 @@ def donor_profile(request):
         "form": form,
         "profile": profile,
         "donations": donations,
+        "donations_completed_count": donations_completed_count,
+        "profile_completion": profile_completion,
     }
     return render(request, "features/donor_profile.html", context)
 
@@ -136,7 +155,7 @@ def add_campaign(request):
         if form.is_valid():
             campaign = form.save()
             messages.success(request, "Campaign created successfully!")
-            return redirect("campaign_detail", campaign_id=campaign.id)
+            return redirect("features:campaign_detail", campaign_id=campaign.id)
     else:
         form = CampaignForm()
 
@@ -155,7 +174,7 @@ def add_expense(request, campaign_id):
             expense.approved_by = request.user
             expense.save()
             messages.success(request, "Expense added successfully!")
-            return redirect("campaign_detail", campaign_id=campaign.id)
+            return redirect("features:campaign_detail", campaign_id=campaign.id)
     else:
         form = ExpenseForm()
 

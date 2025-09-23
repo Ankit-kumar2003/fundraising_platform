@@ -23,4 +23,5 @@ urlpatterns = [
         name="add_expense",
     ),
     path("profile/", views.donor_profile, name="donor_profile"),
+
 ]

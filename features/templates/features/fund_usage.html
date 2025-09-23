@@ -19,13 +19,7 @@
                 {% for donation in donations %}
                 <tr class="border-b">
                     <td class="py-2 px-4">{{ donation.donation_date|date:"d M Y" }}</td>
-                    <td class="py-2 px-4">
-                        {% if donation.anonymous %}
-                        Anonymous
-                        {% else %}
-                        {{ donation.donor.full_name }}
-                        {% endif %}
-                    </td>
+                    <td class="py-2 px-4">{{ donation.donor.full_name }}</td>
                     <td class="py-2 px-4">{{ donation.amount }}</td>
                     <td class="py-2 px-4">{{ donation.campaign.title }}</td>
                     <td class="py-2 px-4">{{ donation.message|default:"-" }}</td>

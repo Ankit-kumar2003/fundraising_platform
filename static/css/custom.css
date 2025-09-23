@@ -2,9 +2,57 @@ body {
     font-family: 'Poppins', sans-serif;
 }
 
+/* Enhanced animations and effects */
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}
+
+@keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 20px rgba(59, 130, 246, 0.3); }
+    50% { box-shadow: 0 0 30px rgba(59, 130, 246, 0.5); }
+}
+
+@keyframes gradient-shift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Floating animation for background elements */
+.bg-gradient-to-br .absolute:nth-child(1) {
+    animation: float 6s ease-in-out infinite;
+}
+
+.bg-gradient-to-br .absolute:nth-child(2) {
+    animation: float 8s ease-in-out infinite reverse;
+}
+
+.bg-gradient-to-br .absolute:nth-child(3) {
+    animation: float 7s ease-in-out infinite;
+}
+
+/* Enhanced form inputs */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+textarea,
+select {
+    @apply w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-200 bg-white/80 backdrop-blur-sm;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+textarea:focus,
+select:focus {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
 /* Theme transition improvements */
 * {
-    transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
 }
 
 /* Ensure dark mode classes work properly */
@@ -80,21 +128,74 @@ html:not(.dark) {
     }
 }
 
-/* Smooth transitions for better UX - moved to top */
-
-/* Better focus states for accessibility */
-button:focus,
-a:focus,
-input:focus,
-select:focus,
-textarea:focus {
-    outline: 2px solid #22c55e;
-    outline-offset: 2px;
+/* Enhanced form inputs for Tailwind */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="tel"],
+input[type="url"],
+textarea,
+select {
+    @apply w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors;
 }
 
-/* Improved touch targets for mobile */
-@media (max-width: 768px) {
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="number"]:focus,
+input[type="tel"]:focus,
+input[type="url"]:focus,
+textarea:focus,
+select:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
 
+/* Error state for form inputs */
+.error input[type="text"],
+.error input[type="email"],
+.error input[type="password"],
+.error input[type="number"],
+.error input[type="tel"],
+.error input[type="url"],
+.error textarea,
+.error select {
+    border-color: #ef4444;
+}
+
+.error input[type="text"]:focus,
+.error input[type="email"]:focus,
+.error input[type="password"]:focus,
+.error input[type="number"]:focus,
+.error input[type="tel"]:focus,
+.error input[type="url"]:focus,
+.error textarea:focus,
+.error select:focus {
+    border-color: #ef4444;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+/* Hero enhancements (shared) */
+.hero-bg .overlay {
+    background: linear-gradient(180deg, rgba(2,6,23,0.55), rgba(2,6,23,0.25));
+}
+
+/* Footer subtle improvements (Tailwind pages) */
+footer {
+    box-shadow: 0 -8px 24px rgba(2,6,23,0.15);
+}
+
+/* Utility helpers */
+.rounded-xl { border-radius: 16px; }
+.shadow-elevate { box-shadow: 0 10px 24px rgba(2,6,23,0.12); }
+
+/* Smooth image reveal */
+.hero-img { animation: fadeIn 600ms ease forwards; }
+@keyframes fadeIn { from { opacity: 0 } to { opacity: 1 } }
+
+/* Better touch targets for mobile */
+@media (max-width: 768px) {
     button,
     a,
     input[type="button"],

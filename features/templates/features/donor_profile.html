@@ -6,30 +6,37 @@
     <div
         class="relative h-40 rounded-t-2xl bg-gradient-to-r from-green-600 to-green-400 dark:from-green-700 dark:to-green-500 shadow-lg flex items-end">
         <div class="absolute left-1/2 transform -translate-x-1/2 translate-y-1/2 z-10">
-            <div class="w-32 h-32 rounded-full overflow-hidden shadow-lg border-4 border-white dark:border-gray-900">
+            <div class="w-32 h-32 rounded-full overflow-hidden shadow-lg border-4 border-white dark:border-gray-900 relative group">
                 {% if profile.photo %}
                 <img src="{{ profile.photo.url }}" alt="Profile Photo" class="w-full h-full object-cover">
                 {% else %}
                 <img src="https://ui-avatars.com/api/?name={{ profile.full_name|urlencode }}&background=166534&color=fff&size=128"
                     alt="Profile Picture" class="w-full h-full object-cover">
                 {% endif %}
+                <button type="button" onclick="openEditModal()" aria-label="Change profile photo"
+                    class="absolute bottom-1 right-1 p-2 rounded-full bg-white/90 dark:bg-gray-900/80 text-green-700 dark:text-green-300 shadow opacity-90 group-hover:opacity-100 transition">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 7h4l2-2h6l2 2h4v12H3z" />
+                        <circle cx="12" cy="13" r="3" />
+                    </svg>
+                </button>
             </div>
         </div>
     </div>
     <!-- Card Container -->
-    <div class="bg-white dark:bg-gray-800 rounded-b-2xl shadow-lg pt-20 pb-8 px-6 mt-0 animate-fade-in">
+    <div class="bg-white dark:bg-gray-800 rounded-b-2xl shadow-lg pt-20 pb-8 px-6 mt-0">
         <!-- Profile Completion Progress Bar -->
         <div class="mb-6">
             <div class="flex justify-between items-center mb-1">
                 <span class="text-sm font-medium text-green-700">Profile Completion</span>
-                <span class="text-xs text-gray-500">80%</span> <!-- Placeholder, can be dynamic -->
+                <span class="text-xs text-gray-500">{{ profile_completion|default:'0' }}%</span>
             </div>
             <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
-                <div class="bg-green-600 h-2.5 rounded-full" style="width: 80%"></div>
+                <div class="bg-green-600 h-2.5 rounded-full" style="width: {{ profile_completion|default:'0' }}%"></div>
             </div>
         </div>
         <!-- Name and Edit Button -->
-        <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6 gap-2">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-4 gap-2">
             <div class="text-center md:text-left">
                 <h2 class="text-2xl font-bold text-green-700">{{ profile.full_name }}</h2>
                 <p class="text-gray-500 dark:text-gray-300 flex items-center justify-center md:justify-start gap-1">
@@ -45,16 +52,29 @@
             </div>
             <button
                 class="mt-2 md:mt-0 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-full font-semibold shadow transition"
-                onclick="document.getElementById('editProfileModal').classList.remove('hidden')">Edit Profile</button>
+                onclick="openEditModal()">Edit Profile</button>
+        </div>
+        <!-- Quick Actions -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-8">
+            <a href="{% url 'features:project_list' %}"
+               class="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-green-50 text-green-700 border border-green-100 hover:bg-green-100 dark:bg-gray-700 dark:text-green-300 dark:border-gray-600 dark:hover:bg-gray-600 transition">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 7h18M3 12h18M3 17h18"/></svg>
+                Explore Projects
+            </a>
+            <a href="{% url 'features:fund_usage' %}"
+               class="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-white text-green-700 border border-green-200 hover:bg-green-50 dark:bg-gray-700 dark:text-green-300 dark:border-gray-600 dark:hover:bg-gray-600 transition">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 11V3a1 1 0 0 1 2 0v8m-2 10v-6a1 1 0 0 1 2 0v6M5 21V9a1 1 0 0 1 2 0v12m10 0V5a1 1 0 0 1 2 0v16"/></svg>
+                View Transparency
+            </a>
         </div>
         <!-- Tabs -->
         <div class="mb-8 border-b border-gray-200 dark:border-gray-700">
             <nav class="flex space-x-4" aria-label="Tabs">
-                <button id="tab-btn-info" class="px-3 py-2 text-sm font-medium focus:outline-none"
+                <button id="tab-btn-info" class="px-3 py-2 text-sm font-medium focus:outline-none text-gray-500 hover:text-green-700 transition-colors"
                     onclick="showTab('info')">Info</button>
-                <button id="tab-btn-donations" class="px-3 py-2 text-sm font-medium focus:outline-none"
+                <button id="tab-btn-donations" class="px-3 py-2 text-sm font-medium focus:outline-none text-gray-500 hover:text-green-700 transition-colors"
                     onclick="showTab('donations')">Donations</button>
-                <button id="tab-btn-settings" class="px-3 py-2 text-sm font-medium focus:outline-none"
+                <button id="tab-btn-settings" class="px-3 py-2 text-sm font-medium focus:outline-none text-gray-500 hover:text-green-700 transition-colors"
                     onclick="showTab('settings')">Settings</button>
             </nav>
         </div>
@@ -90,25 +110,26 @@
             </div>
             <!-- Donation Stats Card -->
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
-                <div class="bg-green-50 dark:bg-gray-900 rounded-xl p-6 shadow text-center animate-fade-in-up">
+                <div class="bg-green-50 dark:bg-gray-900 rounded-xl p-6 shadow text-center">
                     <div class="text-3xl font-bold text-green-700 mb-2">₹{{ profile.total_donations|default:'0.00' }}
                     </div>
                     <div class="text-gray-600 dark:text-gray-300">Total Donated</div>
                 </div>
-                <div class="bg-green-50 dark:bg-gray-900 rounded-xl p-6 shadow text-center animate-fade-in-up">
-                    <div class="text-3xl font-bold text-green-700 mb-2">{{ donations|length|default:'0' }}</div>
-                    <div class="text-gray-600 dark:text-gray-300">Donations</div>
+                <div class="bg-green-50 dark:bg-gray-900 rounded-xl p-6 shadow text-center">
+                    <div class="text-3xl font-bold text-green-700 mb-2">{{ donations_completed_count|default:'0' }}
+                    </div>
+                    <div class="text-gray-600 dark:text-gray-300">Completed Donations</div>
                 </div>
-                <div class="bg-green-50 dark:bg-gray-900 rounded-xl p-6 shadow text-center animate-fade-in-up">
-                    <div class="text-lg font-bold text-green-700 mb-2">{% if profile.last_donation_date %}{{
-                        profile.last_donation_date|date:'F j, Y' }}{% else %}N/A{% endif %}</div>
+                <div class="bg-green-50 dark:bg-gray-900 rounded-xl p-6 shadow text-center">
+                    <div class="text-lg font-bold text-green-700 mb-2">{% if profile.last_donation_date %}{{ profile.last_donation_date|date:'F j, Y' }}{% else %}N/A{% endif %}</div>
                     <div class="text-gray-600 dark:text-gray-300">Last Donation</div>
                 </div>
             </div>
         </div>
         <div id="tab-donations" class="hidden">
-            <!-- Donation History Table (already implemented) -->
-            <div class="overflow-x-auto">
+            <!-- Donation History Table -->
+            {% if donations %}
+            <div class="table-responsive overflow-x-auto rounded-lg ring-1 ring-gray-200 dark:ring-gray-700">
                 <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                     <thead class="bg-green-100 dark:bg-green-900">
                         <tr>
@@ -121,7 +142,7 @@
                     </thead>
                     <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-100 dark:divide-gray-700">
                         {% for donation in donations %}
-                        <tr>
+                        <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50">
                             <td class="px-4 py-2 whitespace-nowrap">{{ donation.donation_date|date:'d M Y, H:i' }}</td>
                             <td class="px-4 py-2 whitespace-nowrap">{{ donation.campaign.title }}</td>
                             <td class="px-4 py-2 whitespace-nowrap">₹{{ donation.amount }}</td>
@@ -143,18 +164,34 @@
                     </tbody>
                 </table>
             </div>
+            {% else %}
+            <div class="text-center py-10">
+                <div class="mx-auto max-w-md bg-green-50 dark:bg-gray-900 rounded-xl p-6 border border-green-100 dark:border-gray-700">
+                    <h4 class="text-lg font-semibold text-green-700 mb-2">No donations yet</h4>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4">Explore our projects and make your first contribution.</p>
+                    <div class="flex justify-center gap-3">
+                        <a href="{% url 'features:campaign_list' %}"
+                           class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-full transition-colors">Browse Campaigns</a>
+                        <a href="{% url 'features:project_list' %}"
+                           class="bg-white text-green-700 border border-green-600 hover:bg-green-50 font-semibold py-2 px-4 rounded-full transition-colors dark:bg-gray-800 dark:text-green-300 dark:border-green-400 dark:hover:bg-gray-700">View Projects</a>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
         </div>
         <div id="tab-settings" class="hidden">
             <div class="text-gray-500 text-center py-8">Settings coming soon!</div>
         </div>
     </div>
     <!-- Edit Profile Modal -->
-    <div id="editProfileModal"
-        class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 hidden">
+    <div id="editProfileModal" role="dialog" aria-modal="true" aria-labelledby="editProfileTitle"
+        class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 hidden">
         <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 w-full max-w-md relative">
             <button class="absolute top-2 right-2 text-gray-400 hover:text-red-500 text-2xl font-bold"
-                onclick="document.getElementById('editProfileModal').classList.add('hidden')">&times;</button>
-            <h3 class="text-xl font-semibold mb-4 text-green-700 dark:text-green-400">Edit Profile</h3>
+                aria-label="Close edit profile"
+                onclick="closeEditModal()">&times;</button>
+            <h3 id="editProfileTitle" class="text-xl font-semibold mb-4 text-green-700 dark:text-green-400">Edit
+                Profile</h3>
             <form method="post" enctype="multipart/form-data" class="space-y-4">
                 {% csrf_token %}
 
@@ -229,7 +266,7 @@
         </div>
     </div>
 </div>
-<!-- Tab switching script -->
+<!-- Tab switching and modal script -->
 <script>
     function showTab(tab) {
         // Hide all tab contents
@@ -237,18 +274,39 @@
         document.getElementById('tab-donations').classList.add('hidden');
         document.getElementById('tab-settings').classList.add('hidden');
         // Remove active styles from all buttons
-        document.getElementById('tab-btn-info').classList.remove('text-green-700', 'border-b-2', 'border-green-600');
-        document.getElementById('tab-btn-info').classList.add('text-gray-500', 'hover:text-green-700');
-        document.getElementById('tab-btn-donations').classList.remove('text-green-700', 'border-b-2', 'border-green-600');
-        document.getElementById('tab-btn-donations').classList.add('text-gray-500', 'hover:text-green-700');
-        document.getElementById('tab-btn-settings').classList.remove('text-green-700', 'border-b-2', 'border-green-600');
-        document.getElementById('tab-btn-settings').classList.add('text-gray-500', 'hover:text-green-700');
+        const tabs = ['info', 'donations', 'settings'];
+        tabs.forEach(t => {
+            const btn = document.getElementById('tab-btn-' + t);
+            btn.classList.remove('text-green-700', 'border-b-2', 'border-green-600');
+            btn.classList.add('text-gray-500', 'hover:text-green-700');
+        });
         // Show the selected tab content
         document.getElementById('tab-' + tab).classList.remove('hidden');
         // Add active styles to the selected button
-        document.getElementById('tab-btn-' + tab).classList.add('text-green-700', 'border-b-2', 'border-green-600');
-        document.getElementById('tab-btn-' + tab).classList.remove('text-gray-500', 'hover:text-green-700');
+        const activeBtn = document.getElementById('tab-btn-' + tab);
+        activeBtn.classList.add('text-green-700', 'border-b-2', 'border-green-600');
+        activeBtn.classList.remove('text-gray-500', 'hover:text-green-700');
     }
+
+    function openEditModal() {
+        document.getElementById('editProfileModal').classList.remove('hidden');
+    }
+    function closeEditModal() {
+        document.getElementById('editProfileModal').classList.add('hidden');
+    }
+    // Close modal on Escape
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            closeEditModal();
+        }
+    });
+    // Close modal when clicking backdrop
+    document.getElementById('editProfileModal').addEventListener('click', (e) => {
+        if (e.target === e.currentTarget) {
+            closeEditModal();
+        }
+    });
+
     // Set default active tab on page load
     showTab('info');
 </script>
