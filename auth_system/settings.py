@@ -163,17 +163,25 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 SESSION_COOKIE_SECURE = not DEBUG
 CSRF_COOKIE_SECURE = not DEBUG
 SECURE_SSL_REDIRECT = not DEBUG and os.getenv("SECURE_SSL_REDIRECT", "False") == "True"
+SECURE_HSTS_SECONDS = 31536000 if not DEBUG else 0  # 1 year for production
+SECURE_HSTS_INCLUDE_SUBDOMAINS = not DEBUG
+SECURE_HSTS_PRELOAD = not DEBUG
 SESSION_COOKIE_AGE = 3600  # 1 hour
 CSRF_COOKIE_AGE = 3600  # 1 hour
+
 # CSRF trusted origins
 CSRF_TRUSTED_ORIGINS = [
     "http://127.0.0.1:8000",
     "http://localhost:8000",
 ]
 
-# Add RENDER_EXTERNAL_URL to CSRF_TRUSTED_ORIGINS if it exists
+# Add RENDER_EXTERNAL_URL to CSRF_TRUSTED_ORIGINS and ALLOWED_HOSTS if it exists
 if os.getenv("RENDER_EXTERNAL_URL"):
-    CSRF_TRUSTED_ORIGINS.append(os.getenv("RENDER_EXTERNAL_URL"))
+    RENDER_URL = os.getenv("RENDER_EXTERNAL_URL")
+    CSRF_TRUSTED_ORIGINS.append(RENDER_URL)
+    # Extract domain name from RENDER_URL and add to ALLOWED_HOSTS
+    RENDER_DOMAIN = RENDER_URL.replace('https://', '').replace('http://', '')
+    ALLOWED_HOSTS.append(RENDER_DOMAIN)
 
 # CSRF Configuration - disable CSRF_USE_SESSIONS for production
 CSRF_USE_SESSIONS = DEBUG  # Only use sessions for CSRF in development
@@ -181,6 +189,7 @@ SESSION_COOKIE_HTTPONLY = True
 CSRF_COOKIE_HTTPONLY = True
 SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
+X_FRAME_OPTIONS = 'DENY'
 
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"

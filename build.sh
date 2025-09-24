@@ -65,13 +65,18 @@ if [ -n "$DATABASE_URL" ]; then
   fi
 fi
 
-# Check if we can connect to the port using nc (netcat)
+# Check if we can connect to the port using nc (netcat) if available
 if [ -n "$DATABASE_URL" ]; then
   DB_HOST=$(echo "$DATABASE_URL" | sed -n 's/.*@\(.*\):.*/\1/p')
   DB_PORT=$(echo "$DATABASE_URL" | sed -n 's/.*@.*:\([0-9]*\)\/.*$/\1/p')
   if [ -n "$DB_HOST" ] && [ -n "$DB_PORT" ]; then
-    echo "\nAttempting to connect to $DB_HOST:$DB_PORT using nc..."
-    nc -zv "$DB_HOST" "$DB_PORT" || echo "Connection to $DB_HOST:$DB_PORT failed"
+    echo "\nAttempting to check database connectivity..."
+    if command -v nc > /dev/null 2>&1; then
+      echo "Using nc to test $DB_HOST:$DB_PORT..."
+      nc -zv "$DB_HOST" "$DB_PORT" || echo "Connection to $DB_HOST:$DB_PORT failed"
+    else
+      echo "nc (netcat) is not available. Skipping TCP port connectivity test."
+    fi
   fi
 fi
 

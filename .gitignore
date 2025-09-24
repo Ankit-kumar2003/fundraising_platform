@@ -1,1 +1,59 @@
+# Django #
+*.log
+*.pot
+*.pyc
+__pycache__/
+local_settings.py
+*.sqlite3
+*.sqlite3-journal
+
+# Media files #
+media/
+
+# Virtual environments #
+venv/
+env/
+.env/
+
+# IDE and editor files #
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files #
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Build files #
+build/
+dist/
+*.egg-info/
+
+# Coverage reports #
+coverage/
+.coverage
+*.cover
+
+# Testing #
+.pytest_cache/
+.tox/
+
+# Secrets #
 .env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Misc #
+*.bak
+*.tmp
+*.temp
+.cache/
