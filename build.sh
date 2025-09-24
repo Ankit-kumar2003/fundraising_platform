@@ -5,6 +5,8 @@ set -o errexit
 # Show Python & pip versions for debugging
 python --version
 pip --version
+which python || true
+which pip || true
 
 # Upgrade pip first
 pip install --upgrade pip
