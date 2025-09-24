@@ -11,8 +11,8 @@ which pip || true
 # Upgrade pip first
 pip install --upgrade pip
 
-# Install dependencies
-pip install -r requirements.txt
+# Install dependencies with verbose output to debug failures
+pip install -r requirements.txt --verbose
 
 # Collect static files
 python manage.py collectstatic --no-input
