@@ -171,12 +171,12 @@ CSRF_TRUSTED_ORIGINS = [
     "http://localhost:8000",
 ]
 
-# Add production domain if provided
+# Add RENDER_EXTERNAL_URL to CSRF_TRUSTED_ORIGINS if it exists
 if os.getenv("RENDER_EXTERNAL_URL"):
     CSRF_TRUSTED_ORIGINS.append(os.getenv("RENDER_EXTERNAL_URL"))
 
-# Additional security settings
-CSRF_USE_SESSIONS = True  # Store CSRF tokens in the session instead of cookies
+# CSRF Configuration - disable CSRF_USE_SESSIONS for production
+CSRF_USE_SESSIONS = DEBUG  # Only use sessions for CSRF in development
 SESSION_COOKIE_HTTPONLY = True
 CSRF_COOKIE_HTTPONLY = True
 SECURE_BROWSER_XSS_FILTER = True
