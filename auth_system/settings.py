@@ -63,7 +63,7 @@ ROOT_URLCONF = "auth_system.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / "accounts" / "templates"],
+        "DIRS": [BASE_DIR / "templates", BASE_DIR / "accounts" / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -147,6 +147,8 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_USER_MODEL = "accounts.CustomUser"
 
 # Email settings
+# Note: Gmail requires App Passwords instead of a normal password
+# For production, consider using a service like SendGrid for better deliverability
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = os.getenv("EMAIL_HOST", "smtp.gmail.com")
 EMAIL_PORT = int(os.getenv("EMAIL_PORT", 587))
@@ -183,11 +185,9 @@ if os.getenv("RENDER_EXTERNAL_URL"):
     RENDER_DOMAIN = RENDER_URL.replace('https://', '').replace('http://', '')
     ALLOWED_HOSTS.append(RENDER_DOMAIN)
 
-# CSRF Configuration - disable CSRF_USE_SESSIONS for production
-CSRF_USE_SESSIONS = DEBUG  # Only use sessions for CSRF in development
+# Security cookie settings
 SESSION_COOKIE_HTTPONLY = True
 CSRF_COOKIE_HTTPONLY = True
-SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 X_FRAME_OPTIONS = 'DENY'
 
