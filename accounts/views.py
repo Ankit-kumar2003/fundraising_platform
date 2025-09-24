@@ -159,10 +159,10 @@ class CustomLoginView(FormView):
                 # Reset failed login attempts
                 user.failed_login_attempts = 0
                 user.last_failed_login = None
-                logger.debug(f"Redirecting to success_url: {self.get_success_url()}")
                 user.save()
                 messages.success(self.request, "Login successful!")
-                return super().form_valid(form)
+                # Directly redirect instead of calling super().form_valid(form)
+                return redirect(self.get_success_url())
             else:
                 logger.debug(f"Authentication failed for user {email}")
                 # Increment failed login attempts
