@@ -2,6 +2,10 @@
 # exit on error
 set -o errexit
 
+# Show Python & pip versions for debugging
+python --version
+pip --version
+
 # Upgrade pip first
 pip install --upgrade pip
 
