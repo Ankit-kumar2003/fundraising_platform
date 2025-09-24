@@ -160,21 +160,21 @@ EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
 
-# Security settings
-# Security settings for production
-SESSION_COOKIE_SECURE = not DEBUG
-CSRF_COOKIE_SECURE = not DEBUG
-SECURE_SSL_REDIRECT = not DEBUG and os.getenv("SECURE_SSL_REDIRECT", "False") == "True"
-SECURE_HSTS_SECONDS = 31536000 if not DEBUG else 0  # 1 year for production
-SECURE_HSTS_INCLUDE_SUBDOMAINS = not DEBUG
-SECURE_HSTS_PRELOAD = not DEBUG
+# Authentication backends
+AUTHENTICATION_BACKENDS = [
+    'accounts.backends.EmailBackend',
+    'django.contrib.auth.backends.ModelBackend',  # Keep default as fallback
+]
+
 SESSION_COOKIE_AGE = 3600  # 1 hour
 CSRF_COOKIE_AGE = 3600  # 1 hour
 
 # CSRF trusted origins
 CSRF_TRUSTED_ORIGINS = [
     "http://127.0.0.1:8000",
+    "https://127.0.0.1:8000",
     "http://localhost:8000",
+    "https://localhost:8000",
 ]
 
 # Add RENDER_EXTERNAL_URL to CSRF_TRUSTED_ORIGINS and ALLOWED_HOSTS if it exists
@@ -197,3 +197,20 @@ LOGOUT_REDIRECT_URL = "/"
 # Static files configuration for production
 if not DEBUG:
     STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
+# Security settings
+# Security settings for production
+SESSION_COOKIE_SECURE = os.getenv('SESSION_COOKIE_SECURE', str(not DEBUG)) == 'True'
+CSRF_COOKIE_SECURE = os.getenv('CSRF_COOKIE_SECURE', str(not DEBUG)) == 'True'
+SECURE_SSL_REDIRECT = os.getenv('SECURE_SSL_REDIRECT', 'False') == 'True'
+SECURE_HSTS_SECONDS = int(os.getenv('SECURE_HSTS_SECONDS', '31536000' if not DEBUG else '0'))  # 1 year for production
+SECURE_HSTS_INCLUDE_SUBDOMAINS = os.getenv('SECURE_HSTS_INCLUDE_SUBDOMAINS', str(not DEBUG)) == 'True'
+SECURE_HSTS_PRELOAD = os.getenv('SECURE_HSTS_PRELOAD', str(not DEBUG)) == 'True'
+
+# Password hashers for consistent password handling between environments
+PASSWORD_HASHERS = [
+    'django.contrib.auth.hashers.PBKDF2PasswordHasher',
+    'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
+    'django.contrib.auth.hashers.Argon2PasswordHasher',
+    'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
+]

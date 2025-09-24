@@ -108,20 +108,28 @@ class CustomLoginView(FormView):
         return context
 
     def form_valid(self, form):
+        import logging
+        logger = logging.getLogger(__name__)
+        
         email = form.cleaned_data["username"].lower()  # Convert to lowercase
         password = form.cleaned_data["password"]
+        
+        logger.debug(f"Login attempt for email: {email}")
 
         try:
             user = CustomUser.objects.get(email=email)
+            logger.debug(f"User found: {user.email}, is_active: {user.is_active}")
 
             # Check if user is active
             if not user.is_active:
+                logger.debug(f"User {email} is not active")
                 messages.error(self.request, "Please verify your email first.")
                 return self.form_invalid(form)
 
             # Check for account lockout
             if user.failed_login_attempts >= 5:
                 lockout_duration = 300  # 5 minutes in seconds
+                logger.debug(f"User {email} has {user.failed_login_attempts} failed attempts")
                 if (
                     user.last_failed_login
                     and (timezone.now() - user.last_failed_login).total_seconds()
@@ -140,22 +148,28 @@ class CustomLoginView(FormView):
                     # Reset failed attempts if lockout period has passed
                     user.failed_login_attempts = 0
                     user.save()
+                    logger.debug(f"Reset failed attempts for user {email}")
 
             # Attempt authentication
+            logger.debug(f"Attempting to authenticate user {email}")
             user = authenticate(username=email, password=password)
             if user is not None:
                 login(self.request, user)
+                logger.debug(f"Authentication successful for user {email}")
                 # Reset failed login attempts
                 user.failed_login_attempts = 0
                 user.last_failed_login = None
+                logger.debug(f"Redirecting to success_url: {self.get_success_url()}")
                 user.save()
                 messages.success(self.request, "Login successful!")
                 return super().form_valid(form)
             else:
+                logger.debug(f"Authentication failed for user {email}")
                 # Increment failed login attempts
                 user.failed_login_attempts += 1
                 user.last_failed_login = timezone.now()
                 user.save()
+                logger.debug(f"Incremented failed attempts for user {email}, now at {user.failed_login_attempts}")
 
                 remaining_attempts = 5 - user.failed_login_attempts
                 if remaining_attempts > 0:
