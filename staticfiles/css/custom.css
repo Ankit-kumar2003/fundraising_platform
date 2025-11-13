@@ -1,0 +1,735 @@
+body {
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Enhanced animations and effects */
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes pulse-glow {
+
+    0%,
+    100% {
+        box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+    }
+
+    50% {
+        box-shadow: 0 0 30px rgba(59, 130, 246, 0.5);
+    }
+}
+
+@keyframes gradient-shift {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* Floating animation for background elements */
+.bg-gradient-to-br .absolute:nth-child(1) {
+    animation: float 6s ease-in-out infinite;
+}
+
+.bg-gradient-to-br .absolute:nth-child(2) {
+    animation: float 8s ease-in-out infinite reverse;
+}
+
+.bg-gradient-to-br .absolute:nth-child(3) {
+    animation: float 7s ease-in-out infinite;
+}
+
+/* Enhanced form inputs */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+textarea,
+select {
+    @apply w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-200 bg-white/80 backdrop-blur-sm;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+textarea:focus,
+select:focus {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Theme transition improvements */
+* {
+    transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+/* Ensure dark mode classes work properly */
+.dark {
+    color-scheme: dark;
+}
+
+/* Force theme classes to be applied */
+html.dark {
+    background-color: #111827;
+}
+
+html:not(.dark) {
+    background-color: #f9fafb;
+}
+
+/* Theme toggle button improvements */
+#theme-toggle,
+#theme-toggle-mobile {
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+#theme-toggle:hover,
+#theme-toggle-mobile:hover {
+    transform: scale(1.05);
+}
+
+#theme-toggle:active,
+#theme-toggle-mobile:active {
+    transform: scale(0.95);
+}
+
+/* Responsive improvements */
+@media (max-width: 640px) {
+    .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    .text-responsive {
+        font-size: 0.875rem;
+    }
+
+    .btn-responsive {
+        padding: 0.5rem 1rem;
+        font-size: 0.875rem;
+    }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+    .text-responsive {
+        font-size: 1rem;
+    }
+
+    .btn-responsive {
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+    }
+}
+
+@media (min-width: 1025px) {
+    .text-responsive {
+        font-size: 1.125rem;
+    }
+
+    .btn-responsive {
+        padding: 1rem 2rem;
+        font-size: 1.125rem;
+    }
+}
+
+/* Enhanced form inputs for Tailwind */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="tel"],
+input[type="url"],
+textarea,
+select {
+    @apply w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="number"]:focus,
+input[type="tel"]:focus,
+input[type="url"]:focus,
+textarea:focus,
+select:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Error state for form inputs */
+.error input[type="text"],
+.error input[type="email"],
+.error input[type="password"],
+.error input[type="number"],
+.error input[type="tel"],
+.error input[type="url"],
+.error textarea,
+.error select {
+    border-color: #ef4444;
+}
+
+.error input[type="text"]:focus,
+.error input[type="email"]:focus,
+.error input[type="password"]:focus,
+.error input[type="number"]:focus,
+.error input[type="tel"]:focus,
+.error input[type="url"]:focus,
+.error textarea:focus,
+.error select:focus {
+    border-color: #ef4444;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+/* Hero enhancements (shared) */
+.hero-bg .overlay {
+    background: linear-gradient(180deg, rgba(2, 6, 23, 0.55), rgba(2, 6, 23, 0.25));
+}
+
+/* Footer subtle improvements (Tailwind pages) */
+footer {
+    box-shadow: 0 -8px 24px rgba(2, 6, 23, 0.15);
+}
+
+/* Utility helpers */
+.rounded-xl {
+    border-radius: 16px;
+}
+
+.shadow-elevate {
+    box-shadow: 0 10px 24px rgba(2, 6, 23, 0.12);
+}
+
+/* Smooth image reveal */
+.hero-img {
+    animation: fadeIn 600ms ease forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0
+    }
+
+    to {
+        opacity: 1
+    }
+}
+
+/* Mobile Navigation Enhancements */
+.mobile-menu-overlay {
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
+/* Ensure mobile menu button is always accessible */
+#mobile-menu-button {
+    min-height: 44px;
+    min-width: 44px;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Mobile menu styling */
+#mobile-menu {
+    z-index: 9999;
+    touch-action: manipulation;
+}
+
+/* Mobile menu links with proper touch targets */
+#mobile-menu a {
+    min-height: 44px;
+    min-width: 44px;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+}
+
+/* Prevent body scroll when menu is open */
+body.menu-open {
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
+}
+
+/* Better touch targets for mobile */
+@media (max-width: 768px) {
+
+    button,
+    a,
+    input[type="button"],
+    input[type="submit"] {
+        min-height: 44px;
+        min-width: 44px;
+        touch-action: manipulation;
+    }
+    
+    .form-input, .form-select, .form-textarea {
+        font-size: 16px; /* Prevents zoom on iOS */
+    }
+    
+    /* Navigation improvements for mobile */
+    nav a, nav button {
+        min-height: 44px;
+        min-width: 44px;
+        touch-action: manipulation;
+    }
+}
+
+/* Landscape orientation adjustments */
+@media (max-width: 768px) and (orientation: landscape) {
+    #mobile-menu {
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+    }
+    
+    #mobile-menu .space-y-4 > * + * {
+        margin-top: 0.75rem;
+    }
+}
+
+/* Extra small screens */
+@media (max-width: 480px) {
+    #mobile-menu {
+        padding: 1rem;
+    }
+    
+    #mobile-menu a {
+        padding: 14px 16px;
+        font-size: 1.1rem;
+    }
+}
+
+/* High DPI displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    #mobile-menu-button svg {
+        stroke-width: 1.5;
+    }
+}
+
+/* Better table responsiveness */
+.table-responsive {
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+/* Improved card shadows on mobile */
+@media (max-width: 768px) {
+    .shadow-lg {
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+}
+
+/* Mobile menu improvements */
+@media (max-width: 1024px) {
+    #mobile-menu {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        max-height: calc(100vh - 80px);
+        overflow-y: auto;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        border-radius: 0 0 8px 8px;
+    }
+
+    .dark #mobile-menu {
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+    }
+
+    #mobile-menu-button {
+        position: relative;
+        z-index: 1001;
+    }
+
+    /* Ensure mobile menu is above other content */
+    .lg\\:hidden {
+        position: relative;
+        z-index: 50;
+    }
+
+    /* Make sure mobile menu is visible when not hidden */
+    #mobile-menu:not(.hidden) {
+        display: block !important;
+    }
+}
+
+/* Prevent body scroll when mobile menu is open */
+body.menu-open {
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
+}
+
+/* Better touch targets for mobile navigation */
+@media (max-width: 1024px) {
+
+    #mobile-menu a,
+    #mobile-menu button {
+        min-height: 48px;
+        display: flex;
+        align-items: center;
+        padding: 12px 16px;
+        font-size: 16px;
+        /* Prevent zoom on iOS */
+    }
+
+    /* Make mobile menu button more prominent */
+    #mobile-menu-button {
+        min-width: 48px;
+        min-height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(0, 0, 0, 0.05);
+        border-radius: 8px;
+        transition: all 0.2s ease;
+        cursor: pointer;
+    }
+
+    .dark #mobile-menu-button {
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    #mobile-menu-button:hover {
+        background-color: rgba(0, 0, 0, 0.1);
+        transform: scale(1.05);
+    }
+
+    .dark #mobile-menu-button:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    #mobile-menu-button:active {
+        transform: scale(0.95);
+    }
+
+    /* Ensure mobile menu is visible and properly positioned */
+    #mobile-menu {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        background-color: white;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        border-radius: 0 0 8px 8px;
+        transform: translateY(0);
+        transition: transform 0.2s ease;
+    }
+
+    .dark #mobile-menu {
+        background-color: #1f2937;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Animation for mobile menu */
+    #mobile-menu.hidden {
+        transform: translateY(-10px);
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    #mobile-menu:not(.hidden) {
+        transform: translateY(0);
+        opacity: 1;
+        pointer-events: auto;
+    }
+}
+
+/* High-contrast form controls (light + dark) */
+.form-control {
+    color: #111827;
+    /* gray-900 */
+    background-color: #f3f4f6;
+    /* slate-100 */
+}
+
+.form-control::placeholder {
+    color: #6B7280;
+    /* gray-500 */
+}
+
+.dark .form-control,
+.dark input[type="text"],
+.dark input[type="email"],
+.dark input[type="password"],
+.dark input[type="number"],
+.dark input[type="tel"],
+.dark input[type="url"],
+.dark textarea,
+.dark select {
+    color: #F8FAFC !important;
+    /* slate-50 */
+    background-color: #334155 !important;
+    /* slate-700 */
+    border-color: #475569 !important;
+    /* slate-600 */
+    -webkit-text-fill-color: #F8FAFC !important;
+}
+
+.dark .form-control::placeholder,
+.dark textarea::placeholder,
+.dark input::placeholder {
+    color: rgba(248, 250, 252, 0.75) !important;
+}
+
+/* Improve autofill contrast in dark mode */
+.dark input:-webkit-autofill,
+.dark textarea:-webkit-autofill,
+.dark select:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0px 1000px #334155 inset !important;
+    -webkit-text-fill-color: #F8FAFC !important;
+}
+
+/* Contact form accessibility tweaks */
+.contact-form .form-control {
+    caret-color: #2563EB;
+    /* blue-600 */
+}
+
+.contact-form .form-control:focus-visible {
+    outline: 2px solid #60A5FA;
+    /* blue-400 */
+    outline-offset: 2px;
+}
+
+.contact-form input[disabled],
+.contact-form textarea[disabled],
+.contact-form select[disabled] {
+    color: #9CA3AF;
+    /* gray-400 */
+    background-color: #475569;
+    /* slate-600 */
+    border-color: #64748B;
+    /* slate-500 */
+}
+
+.dark .contact-form label {
+    color: #E5E7EB;
+    /* gray-200 for clear label contrast */
+}
+
+.dark .contact-form .form-control::placeholder,
+.dark .contact-form textarea::placeholder,
+.dark .contact-form input::placeholder {
+    color: #CBD5E1 !important;
+    /* slate-300: readable placeholder on dark */
+}
+
+.dark .contact-form .text-gray-500 {
+    /* helper text */
+    color: #D1D5DB;
+    /* gray-300: ≥4.5:1 vs #334155 */
+}
+
+.dark .contact-form .text-gray-400 {
+    /* counters */
+    color: #CBD5E1;
+    /* slate-300 for clarity */
+}
+
+.dark .contact-form .text-red-600 {
+    /* error text */
+    color: #FCA5A5;
+    /* red-300 for stronger contrast */
+}
+
+.dark .contact-form .error input,
+.dark .contact-form .error textarea,
+.dark .contact-form .error select {
+    border-color: #F87171;
+    /* red-400: visible error borders */
+}
+
+.dark .contact-form ::selection {
+    background: rgba(96, 165, 250, 0.35);
+    /* blue-400 */
+    color: #F8FAFC;
+}
+
+/* Contact form styling to match user edit profile section */
+.contact-form {
+    background-color: #ffffff;
+    border: 1px solid #e5e7eb;
+}
+
+.dark .contact-form {
+    background-color: #1f2937;
+    border: 1px solid #374151;
+}
+
+/* Contact form input styling to match Edit Profile - Higher specificity */
+.contact-form input,
+.contact-form textarea,
+.contact-form select,
+.contact-form input.form-control,
+.contact-form textarea.form-control,
+.contact-form select.form-control,
+form.contact-form input,
+form.contact-form textarea,
+form.contact-form select {
+    background-color: #ffffff !important;
+    color: #111827 !important;
+    border: 1px solid #d1d5db !important;
+    -webkit-text-fill-color: #111827 !important;
+    -webkit-box-shadow: 0 0 0px 1000px #ffffff inset !important;
+    padding: 0.5rem 0.75rem !important;
+    border-radius: 0.5rem !important;
+    width: 100% !important;
+}
+
+.dark .contact-form input,
+.dark .contact-form textarea,
+.dark .contact-form select,
+.dark .contact-form input.form-control,
+.dark .contact-form textarea.form-control,
+.dark .contact-form select.form-control,
+.dark form.contact-form input,
+.dark form.contact-form textarea,
+.dark form.contact-form select {
+    background-color: #374151 !important;
+    color: #f3f4f6 !important;
+    border: 1px solid #4b5563 !important;
+    -webkit-text-fill-color: #f3f4f6 !important;
+    -webkit-box-shadow: 0 0 0px 1000px #374151 inset !important;
+}
+
+.contact-form input.form-control:focus,
+.contact-form textarea.form-control:focus,
+.contact-form select.form-control:focus {
+    outline: none !important;
+    ring: 2px solid #10b981 !important;
+    border-color: #10b981 !important;
+    box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2) !important;
+}
+
+.dark .contact-form input.form-control:focus,
+.dark .contact-form textarea.form-control:focus,
+.dark .contact-form select.form-control:focus {
+    outline: none !important;
+    ring: 2px solid #34d399 !important;
+    border-color: #34d399 !important;
+    box-shadow: 0 0 0 2px rgba(52, 211, 153, 0.2) !important;
+}
+
+.contact-form input.form-control::placeholder,
+.contact-form textarea.form-control::placeholder,
+.contact-form select.form-control::placeholder {
+    color: #6b7280 !important;
+    opacity: 1 !important;
+}
+
+.dark .contact-form input.form-control::placeholder,
+.dark .contact-form textarea.form-control::placeholder,
+.dark .contact-form select.form-control::placeholder {
+    color: #9ca3af !important;
+    opacity: 1 !important;
+}
+
+/* Labels to match profile form styling */
+.contact-form label {
+    color: #374151 !important;
+}
+
+.dark .contact-form label {
+    color: #d1d5db !important;
+}
+
+/* Dropdown option visibility */
+.contact-form select.form-control option {
+    color: #111827;
+    background-color: #ffffff;
+}
+
+.dark .contact-form select.form-control option {
+    color: #f3f4f6;
+    background-color: #374151;
+}
+
+/* Helper and counter text */
+.contact-form .text-gray-500,
+.contact-form .text-gray-400 {
+    color: #6b7280 !important;
+}
+
+.dark .contact-form .text-gray-500,
+.dark .contact-form .text-gray-400 {
+    color: #9ca3af !important;
+}
+
+/* Remove all green text overrides and conflicting global dark mode rules */
+/* Ultimate dark-mode override for form text visibility - simplified and consistent */
+.dark .form-control,
+.dark input:not([type="checkbox"]):not([type="radio"]),
+.dark textarea,
+.dark select {
+    color: #F8FAFC !important;
+    -webkit-text-fill-color: #F8FAFC !important;
+    background-color: #334155 !important;
+    border-color: #475569 !important;
+    caret-color: #60A5FA !important;
+}
+
+.dark input {
+    background-color: #374151 !important; /* Match profile form styling */
+    color: #f3f4f6 !important; /* Light text for dark background */
+    border-color: #4b5563 !important; /* Consistent border color */
+    -webkit-text-fill-color: #f3f4f6 !important; /* Ensures text visibility */
+}
+
+.dark input::placeholder {
+    color: #9ca3af !important;
+    /* Placeholder in gray for consistency */
+}
+
+.dark input::placeholder,
+.dark textarea::placeholder,
+.dark select::placeholder {
+    color: #CBD5E1 !important;
+    opacity: 1 !important;
+}
+
+/* Override UA form styling inside dark mode */
+.dark .contact-form {
+    color-scheme: dark;
+}
+
+/* Ensure autofill respects dark palette */
+.dark input:-webkit-autofill,
+.dark textarea:-webkit-autofill,
+.dark select:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0px 1000px #334155 inset !important;
+    -webkit-text-fill-color: #F8FAFC !important;
+}
+
+/* Select option colors within dropdowns */
+.dark .contact-form select option {
+    color: #F8FAFC !important;
+    background-color: #334155 !important;
+}
+
+/* Remove any remaining green text rules */
+.dark .contact-form select option {
+    color: #F8FAFC;
+    background-color: #1F2937;
+}

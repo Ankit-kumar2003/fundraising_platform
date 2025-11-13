@@ -78,3 +78,49 @@ class Expense(models.Model):
 
     def __str__(self):
         return f"{self.title} - ₹{self.amount}"
+
+
+class DonorReport(models.Model):
+    """Model to track donor report generation requests and metadata"""
+    
+    EXPORT_FORMATS = [
+        ('CSV', 'CSV'),
+        ('PDF', 'PDF'),
+    ]
+    
+    STATUS_CHOICES = [
+        ('PENDING', 'Pending'),
+        ('PROCESSING', 'Processing'),
+        ('COMPLETED', 'Completed'),
+        ('FAILED', 'Failed'),
+    ]
+    
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE)
+    export_format = models.CharField(max_length=10, choices=EXPORT_FORMATS)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='PENDING')
+    file_path = models.CharField(max_length=500, blank=True, null=True)
+    file_size = models.IntegerField(blank=True, null=True)
+    total_donations = models.IntegerField(default=0)
+    total_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    date_from = models.DateField(blank=True, null=True)
+    date_to = models.DateField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    completed_at = models.DateTimeField(blank=True, null=True)
+    error_message = models.TextField(blank=True, null=True)
+    
+    class Meta:
+        ordering = ['-created_at']
+        
+    def __str__(self):
+        return f"{self.user.username} - {self.campaign.title} ({self.export_format})"
+    
+    @property
+    def is_ready(self):
+        return self.status == 'COMPLETED' and self.file_path
+    
+    @property
+    def file_name(self):
+        if self.file_path:
+            return self.file_path.split('/')[-1]
+        return None

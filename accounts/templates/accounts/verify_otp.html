@@ -4,6 +4,113 @@
 {% block title %}Verify OTP{% endblock %}
 
 {% block content %}
+<style>
+    .countdown-timer {
+        text-align: center;
+        margin-top: 15px;
+        font-size: 0.9em;
+        color: #666;
+        font-weight: 500;
+    }
+
+    .countdown-active {
+        color: #d9534f;
+        font-weight: bold;
+        animation: pulse 1s ease-in-out infinite;
+    }
+
+    .resend-button button.disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+        pointer-events: none;
+        opacity: 0.7;
+    }
+
+    .resend-section {
+        margin-top: 2rem;
+        padding: 1.5rem;
+        border-radius: 8px;
+        background-color: #f8f9fa;
+        border: 1px solid #e9ecef;
+        text-align: center;
+    }
+
+    .resend-button {
+        margin-top: 1rem;
+    }
+
+    .resend-button button {
+        min-width: 150px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .help-text {
+        margin-top: 10px;
+        font-size: 0.85rem;
+        color: #6c757d;
+        text-align: center;
+    }
+
+    .attempts-counter {
+        margin-top: 1rem;
+        font-size: 0.9rem;
+        color: #495057;
+        font-weight: 500;
+    }
+
+    .info-message {
+        background-color: #e3f2fd;
+        color: #1976d2;
+        padding: 10px 15px;
+        border-radius: 4px;
+        margin-bottom: 15px;
+        font-size: 0.95rem;
+        border-left: 4px solid #1976d2;
+    }
+
+    @keyframes pulse {
+
+        0%,
+        100% {
+            opacity: 1;
+        }
+
+        50% {
+            opacity: 0.7;
+        }
+    }
+
+    .tooltip {
+        position: relative;
+        display: inline-block;
+        border-bottom: 1px dotted #6c757d;
+        cursor: help;
+    }
+
+    .tooltip .tooltiptext {
+        visibility: hidden;
+        width: 200px;
+        background-color: #343a40;
+        color: #fff;
+        text-align: center;
+        border-radius: 6px;
+        padding: 8px;
+        position: absolute;
+        z-index: 1;
+        bottom: 125%;
+        left: 50%;
+        margin-left: -100px;
+        opacity: 0;
+        transition: opacity 0.3s;
+        font-size: 0.8rem;
+    }
+
+    .tooltip:hover .tooltiptext {
+        visibility: visible;
+        opacity: 1;
+    }
+</style>
 <div class="row justify-content-center">
     <div class="col-md-6">
         <div class="card">
@@ -18,11 +125,265 @@
                         <button type="submit" class="btn btn-primary">Verify OTP</button>
                     </div>
                 </form>
-                <div class="text-center mt-3">
-                    <p>Didn't receive OTP? <a href="{% url 'resend_otp' %}">Resend OTP</a></p>
+
+                <div class="resend-section">
+                    <div class="info-message">
+                        <i class="fas fa-info-circle"></i> If you didn't receive the OTP, you can request a new one
+                        after the countdown below.
+                    </div>
+
+                    <div class="attempts-counter" id="attemptsCounter">
+                        Maximum 3 resend attempts per minute. <span class="tooltip">Learn more<span
+                                class="tooltiptext">This limit helps protect your account from unauthorized access
+                                attempts.</span></span>
+                    </div>
+
+                    <form id="resendOtpForm" method="post" action="{% url 'resend_otp' %}">
+                        {% csrf_token %}
+                        <div class="resend-button">
+                            <button type="submit" id="resendLink" class="btn btn-secondary btn-lg">
+                                <i class="fas fa-redo-alt"></i> Resend OTP
+                            </button>
+                        </div>
+                    </form>
+
+                    <div class="countdown-timer" id="countdownTimer">
+                        <!-- Countdown timer will appear here -->
+                    </div>
+
+                    <div class="help-text">
+                        <p>Check your spam folder if you don't see the email in your inbox.</p>
+                        <p>Make sure you entered the correct email address during registration.</p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Check if URL has cooldown parameter in hash
+        const urlHash = window.location.hash;
+        let cooldownSeconds = 60; // Default 1 minute cooldown when page loads
+
+        // Initialize remaining attempts counter
+        const maxAttempts = 3;
+        let remainingAttempts = localStorage.getItem('otpRemainingAttempts') || maxAttempts;
+
+        // References to DOM elements
+        const resendForm = document.getElementById('resendOtpForm');
+        const resendLink = document.getElementById('resendLink');
+        const countdownTimer = document.getElementById('countdownTimer');
+
+        // Update attempts counter display
+        updateAttemptsCounter();
+
+        // Check for any Django messages that might have been set
+        checkForDjangoMessages();
+
+        // Parse cooldown from URL hash if present
+        if (urlHash.includes('cooldown=')) {
+            const match = urlHash.match(/cooldown=(\d+)/);
+            if (match && match[1]) {
+                cooldownSeconds = parseInt(match[1], 10);
+            }
+        }
+
+        // Always start countdown when page loads
+        startCountdown(cooldownSeconds);
+
+        // Add submit event listener to resend form
+        if (resendForm) {
+            resendForm.addEventListener('submit', function (e) {
+                // Check if attempts are remaining
+                if (remainingAttempts <= 0) {
+                    alert('You have reached the maximum number of resend attempts for this minute. Please try again later.');
+                    e.preventDefault();
+                    return false;
+                }
+
+                // Show confirmation before resending
+                const userConfirmed = confirm('Are you sure you want to resend the OTP?\n\nAfter resending, you will need to wait 1 minute before requesting another OTP.\n\nRemaining attempts: ' + remainingAttempts);
+
+                if (!userConfirmed) {
+                    e.preventDefault();
+                    return false;
+                }
+            });
+        }
+
+        // Add submit event listener to resend form
+        const resendForm = document.getElementById('resendOtpForm');
+        const resendLink = document.getElementById('resendLink');
+        const countdownTimer = document.getElementById('countdownTimer');
+
+        if (resendForm && countdownTimer) {
+            resendForm.addEventListener('submit', function (e) {
+                // Check if attempts are remaining
+                if (remainingAttempts <= 0) {
+                    alert('You have reached the maximum number of resend attempts for this minute. Please try again later.');
+                    e.preventDefault();
+                    return false;
+                }
+
+                // Show confirmation before resending
+                const userConfirmed = confirm('Are you sure you want to resend the OTP?\n\nAfter resending, you will need to wait 1 minute before requesting another OTP.\n\nRemaining attempts: ' + remainingAttempts);
+
+                if (!userConfirmed) {
+                    e.preventDefault();
+                    return false;
+                }
+            });
+        }
+
+        // Add Font Awesome CSS for icons
+        function loadFontAwesome() {
+            if (!document.querySelector('link[href*="font-awesome"]')) {
+                const link = document.createElement('link');
+                link.rel = 'stylesheet';
+                link.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css';
+                document.head.appendChild(link);
+            }
+        }
+
+        // Load Font Awesome
+        loadFontAwesome();
+
+        function startCountdown(seconds) {
+            // Always show the countdown, even if seconds is 0 initially
+            if (!countdownTimer) return;
+
+            // Show initial state - OTP has just been sent or page loaded
+            if (seconds <= 0) {
+                countdownTimer.innerHTML = '<i class="fas fa-check-circle"></i> OTP has been sent to your email';
+                countdownTimer.classList.remove('countdown-active');
+
+                // Enable resend button immediately if seconds <= 0
+                if (resendLink) {
+                    resendLink.classList.remove('disabled');
+                }
+                if (resendForm) {
+                    resendForm.style.pointerEvents = 'auto';
+                }
+                return;
+            }
+
+            if (resendLink) {
+                // Disable the resend button
+                resendLink.classList.add('disabled');
+                if (resendForm) {
+                    resendForm.style.pointerEvents = 'none';
+                }
+            }
+
+            // Update the countdown timer display
+            updateCountdownDisplay(seconds);
+
+            // Set interval to update countdown
+            const countdownInterval = setInterval(function () {
+                seconds--;
+
+                if (seconds <= 0) {
+                    // Clear interval and re-enable resend button when countdown is done
+                    clearInterval(countdownInterval);
+                    countdownTimer.innerHTML = '<i class="fas fa-check-circle"></i> <span class="countdown-active">You can now request a new OTP</span>';
+                    countdownTimer.classList.remove('countdown-active');
+
+                    if (resendLink) {
+                        resendLink.classList.remove('disabled');
+                    }
+                    if (resendForm) {
+                        resendForm.style.pointerEvents = 'auto';
+                    }
+
+                    // Show message when resend is available
+                    showResendAvailableMessage();
+                } else {
+                    // Update countdown display
+                    updateCountdownDisplay(seconds);
+                }
+            }, 1000);
+        }
+
+        function updateCountdownDisplay(seconds) {
+            if (!countdownTimer) return;
+
+            const minutes = Math.floor(seconds / 60);
+            const remainingSeconds = seconds % 60;
+            const formattedTime = minutes > 0
+                ? `${minutes}m ${remainingSeconds}s`
+                : `${remainingSeconds}s`;
+
+            // More prominent and animated countdown display
+            countdownTimer.innerHTML = `
+                <i class="fas fa-clock fa-spin"></i> <strong>New OTP available in:</strong> 
+                <span class="countdown-active" style="font-size: 1.3em; display: inline-block;">${formattedTime}</span>
+            `;
+
+            // Force reflow to ensure animation works
+            countdownTimer.classList.remove('countdown-active');
+            void countdownTimer.offsetWidth; // Trigger reflow
+            countdownTimer.classList.add('countdown-active');
+        }
+
+        function updateAttemptsCounter() {
+            const attemptsCounter = document.getElementById('attemptsCounter');
+            if (attemptsCounter) {
+                attemptsCounter.innerHTML = `
+                    <i class="fas fa-shield-alt"></i> Maximum 3 resend attempts per minute. 
+                    <strong>Attempts remaining: ${remainingAttempts}</strong>
+                    <span class="tooltip">Learn more<span class="tooltiptext">This limit helps protect your account from unauthorized access attempts.</span></span>
+                `;
+            }
+        }
+
+        function decrementAttempts() {
+            remainingAttempts--;
+            if (remainingAttempts < 0) remainingAttempts = 0;
+            localStorage.setItem('otpRemainingAttempts', remainingAttempts);
+            updateAttemptsCounter();
+        }
+
+        function showResendAvailableMessage() {
+            // Create or update a message indicating resend is available
+            let messageContainer = document.getElementById('resendAvailableMessage');
+
+            if (!messageContainer) {
+                messageContainer = document.createElement('div');
+                messageContainer.id = 'resendAvailableMessage';
+                messageContainer.className = 'alert alert-success mt-2';
+                messageContainer.role = 'alert';
+
+                const resendSection = document.querySelector('.resend-section');
+                if (resendSection) {
+                    // Insert the message before the attempts counter
+                    const attemptsCounter = document.getElementById('attemptsCounter');
+                    if (attemptsCounter) {
+                        resendSection.insertBefore(messageContainer, attemptsCounter);
+                    }
+                }
+            }
+
+            messageContainer.innerHTML = '<i class="fas fa-check-circle"></i> You can now request a new OTP.';
+
+            // Auto-remove the message after 5 seconds
+            setTimeout(() => {
+                if (messageContainer && messageContainer.parentNode) {
+                    messageContainer.parentNode.removeChild(messageContainer);
+                }
+            }, 5000);
+        }
+
+        function checkForDjangoMessages() {
+            // Check if there are any success messages from Django
+            const messages = document.querySelectorAll('.alert-success');
+            messages.forEach(message => {
+                if (message.textContent.includes('New OTP has been sent')) {
+                    // If we find a success message, decrement attempts
+                    decrementAttempts();
+                }
+            });
+        }
+    });
+</script>
 {% endblock %}

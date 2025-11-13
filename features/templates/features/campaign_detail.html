@@ -66,6 +66,27 @@
                     class="w-full sm:w-auto bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-full transition-colors text-sm sm:text-base">Donate</button>
             </form>
         </div>
+        
+        <!-- Download Donations List Section -->
+        <div class="mb-6 sm:mb-8 bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4 sm:p-6">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div>
+                    <h3 class="text-lg font-semibold text-blue-700 dark:text-blue-400 mb-2">
+                        <i class="fas fa-download mr-2"></i>Download Donations List
+                    </h3>
+                    <p class="text-sm text-blue-600 dark:text-blue-300">
+                        Download a complete list of all donations made to this campaign in Excel format.
+                    </p>
+                </div>
+                <div>
+                    <a href="{% url 'features:download_campaign_donations' campaign.id %}" 
+                       class="inline-flex items-center justify-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg transition-colors text-sm">
+                        <i class="fas fa-file-excel mr-2"></i>Download Excel File
+                    </a>
+                </div>
+            </div>
+        </div>
+        
         {% else %}
         <div class="mb-6 sm:mb-8 text-center text-gray-500 dark:text-gray-400">
             <p class="text-sm sm:text-base">Please <a href="{% url 'login' %}"

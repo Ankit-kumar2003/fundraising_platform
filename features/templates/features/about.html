@@ -3,26 +3,14 @@
 
 {% block extra_head %}
 <style>
-    body::before {
-        content: "";
-        background: url('https://images.unsplash.com/photo-1584270354949-1c1c56d96f9c') no-repeat center center fixed;
-        background-size: cover;
-        position: fixed;
-        top: 0;
-        left: 0;
-        height: 100%;
-        width: 100%;
-        z-index: -1;
-        filter: brightness(0.6);
-    }
+  .stat-card { transition: transform .2s ease, box-shadow .2s ease; }
+  .stat-card:hover { transform: translateY(-2px); }
+  .timeline-dot { width: 12px; height: 12px; }
 </style>
 {% endblock %}
 
 {% block content %}
-<header class="p-4 sm:p-6 text-center">
-    <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-2">Together for Our Village</h1>
-    <p class="text-base sm:text-lg md:text-xl">Our Journey of Unity, Hope, and Transformation</p>
-</header>
+{% include 'features/partials/hero.html' with hero_title='About Us' hero_subtitle='Unity, hope, and transformation — building a thriving village together.' hero_bg_url='https://images.unsplash.com/photo-1584270354949-1c1c56d96f9c?auto=format&fit=crop&w=1600&q=60' %}
 
 <section class="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 backdrop-blur-sm bg-gray-50 bg-opacity-10 dark:bg-gray-900 dark:bg-opacity-30 rounded-2xl">
     <h2 class="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 text-center">Our Story</h2>
@@ -33,43 +21,113 @@
     </p>
 </section>
 
-<section class="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-    <div class="transform transition hover:scale-105 bg-white bg-opacity-20 p-4 sm:p-6 rounded-xl shadow-lg text-center">
-        <div class="w-16 sm:w-20 h-29 sm:h-20 mx-auto mb-3 sm:mb-4 rounded-full overflow-hidden">
-            <img src="https://www.shutterstock.com/image-photo/portrait-happy-woman-indian-ethnicity-260nw-2165545909.jpg?auto=format&fit=crop&w=500&q=80"
-                 class="w-full h-full object-cover object-top"
-                 alt="Founder" />
+<!-- Timeline -->
+<section class="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+  <h2 class="text-2xl sm:text-3xl font-bold text-center mb-6">Milestones</h2>
+  <div class="relative">
+    <div class="hidden md:block absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-green-200 to-green-600"></div>
+    <div class="grid md:grid-cols-2 gap-6">
+      <div class="md:text-right">
+        <div class="inline-flex items-center gap-3 bg-white/40 dark:bg-gray-800/40 p-4 rounded-xl border border-white/40 dark:border-gray-700">
+          <span class="timeline-dot rounded-full bg-green-500 inline-block"></span>
+          <div>
+            <div class="font-semibold">2023 — Initiative launched</div>
+            <div class="text-sm">Formed community team and defined transparent goals.</div>
+          </div>
         </div>
-        <h3 class="text-lg sm:text-xl font-semibold">Sita Devi</h3>
-        <p class="text-sm sm:text-base">Retired Teacher | Treasurer</p>
+      </div>
+      <div>
+        <div class="inline-flex items-center gap-3 bg-white/40 dark:bg-gray-800/40 p-4 rounded-xl border border-white/40 dark:border-gray-700">
+          <span class="timeline-dot rounded-full bg-indigo-500 inline-block"></span>
+          <div>
+            <div class="font-semibold">2024 — First projects funded</div>
+            <div class="text-sm">School supplies and medical aid distribution.</div>
+          </div>
+        </div>
+      </div>
+      <div class="md:text-right">
+        <div class="inline-flex items-center gap-3 bg-white/40 dark:bg-gray-800/40 p-4 rounded-xl border border-white/40 dark:border-gray-700">
+          <span class="timeline-dot rounded-full bg-yellow-500 inline-block"></span>
+          <div>
+            <div class="font-semibold">2025 — Infrastructure upgrades</div>
+            <div class="text-sm">Clean water points and improved pathways.</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="inline-flex items-center gap-3 bg-white/40 dark:bg-gray-800/40 p-4 rounded-xl border border-white/40 dark:border-gray-700">
+          <span class="timeline-dot rounded-full bg-purple-500 inline-block"></span>
+          <div>
+            <div class="font-semibold">Future — Scaling impact</div>
+            <div class="text-sm">Scholarships, healthcare camps, and digital literacy.</div>
+          </div>
+        </div>
+      </div>
     </div>
-        
-    <div class="transform transition hover:scale-105 bg-white bg-opacity-20 p-4 sm:p-6 rounded-xl shadow-lg text-center">
-        <img src="https://cdn-icons-png.flaticon.com/512/3135/3135789.png" class="w-16 sm:w-20 mx-auto mb-3 sm:mb-4" alt="Volunteer" />
-        <h3 class="text-lg sm:text-xl font-semibold">Ravi Kumar</h3>
-        <p class="text-sm sm:text-base">Student Volunteer | Social Media</p>
-    </div>
-    <div class="transform transition hover:scale-105 bg-white bg-opacity-20 p-4 sm:p-6 rounded-xl shadow-lg text-center sm:col-span-2 lg:col-span-1">
-        <img src="https://cdn-icons-png.flaticon.com/512/3135/3135823.png" class="w-16 sm:w-20 mx-auto mb-3 sm:mb-4"
-            alt="Coordinator" />
-        <h3 class="text-lg sm:text-xl font-semibold">Anjali Sharma</h3>
-        <p class="text-sm sm:text-base">Project Coordinator</p>
-    </div>
+  </div>
 </section>
 
-<section class="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-12 grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
-    <div class="bg-white bg-opacity-20 rounded-xl p-4 sm:p-6 text-center shadow-md">
-        <h4 class="text-xl sm:text-2xl font-bold">Mission</h4>
-        <p class="mt-2 text-sm sm:text-base">To create sustainable solutions for our village through community-funded projects.</p>
+<!-- Impact Metrics -->
+<section class="max-w-6xl mx-auto px-4 sm:px-6 py-6 grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
+  <div class="stat-card rounded-xl p-6 bg-green-50 dark:bg-gray-800 border border-green-100 dark:border-gray-700 text-center">
+    <div class="text-3xl font-extrabold text-green-700 dark:text-green-400">1000+</div>
+    <div class="mt-1 text-sm">Donors united</div>
+  </div>
+  <div class="stat-card rounded-xl p-6 bg-indigo-50 dark:bg-gray-800 border border-indigo-100 dark:border-gray-700 text-center">
+    <div class="text-3xl font-extrabold text-indigo-700 dark:text-indigo-400">25</div>
+    <div class="mt-1 text-sm">Projects funded</div>
+  </div>
+  <div class="stat-card rounded-xl p-6 bg-yellow-50 dark:bg-gray-800 border border-yellow-100 dark:border-gray-700 text-center">
+    <div class="text-3xl font-extrabold text-yellow-700 dark:text-yellow-400">₹15L+</div>
+    <div class="mt-1 text-sm">Raised transparently</div>
+  </div>
+</section>
+
+<section class="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+  <h2 class="text-2xl sm:text-3xl font-bold text-center mb-6">Meet the Team</h2>
+  <div class="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+    <div class="transition hover:-translate-y-1 bg-white/30 dark:bg-gray-800/40 p-6 rounded-xl shadow text-center border border-white/40 dark:border-gray-700">
+      <div class="w-20 h-20 mx-auto mb-4 rounded-full overflow-hidden ring-4 ring-green-100">
+        <img src="https://www.shutterstock.com/image-photo/portrait-happy-woman-indian-ethnicity-260nw-2165545909.jpg?auto=format&fit=crop&w=500&q=80" class="w-full h-full object-cover object-top" alt="Founder" />
+      </div>
+      <h3 class="text-lg font-semibold">Sita Devi</h3>
+      <p class="text-sm">Retired Teacher • Treasurer</p>
     </div>
-    <div class="bg-white bg-opacity-20 rounded-xl p-4 sm:p-6 text-center shadow-md">
-        <h4 class="text-xl sm:text-2xl font-bold">Vision</h4>
-        <p class="mt-2 text-sm sm:text-base">A thriving village with education, healthcare, and infrastructure for all.</p>
+    <div class="transition hover:-translate-y-1 bg-white/30 dark:bg-gray-800/40 p-6 rounded-xl shadow text-center border border-white/40 dark:border-gray-700">
+      <img src="https://cdn-icons-png.flaticon.com/512/3135/3135789.png" class="w-16 mx-auto mb-4" alt="Volunteer" />
+      <h3 class="text-lg font-semibold">Ravi Kumar</h3>
+      <p class="text-sm">Student Volunteer • Social Media</p>
     </div>
-    <div class="bg-white bg-opacity-20 rounded-xl p-4 sm:p-6 text-center shadow-md">
-        <h4 class="text-xl sm:text-2xl font-bold">Values</h4>
-        <p class="mt-2 text-sm sm:text-base">Transparency, Community, Compassion, and Trust.</p>
+    <div class="transition hover:-translate-y-1 bg-white/30 dark:bg-gray-800/40 p-6 rounded-xl shadow text-center border border-white/40 dark:border-gray-700">
+      <img src="https://cdn-icons-png.flaticon.com/512/3135/3135823.png" class="w-16 mx-auto mb-4" alt="Coordinator" />
+      <h3 class="text-lg font-semibold">Anjali Sharma</h3>
+      <p class="text-sm">Project Coordinator</p>
     </div>
+  </div>
+</section>
+
+<section class="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+  <div class="rounded-xl p-6 text-center shadow bg-white/50 dark:bg-gray-800/50 border border-white/40 dark:border-gray-700">
+    <div class="mx-auto w-10 h-10 rounded-full bg-green-100 flex items-center justify-center mb-3">
+      <svg class="w-5 h-5 text-green-700" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zm3.707 5.293l-4.243 4.243-2.121-2.121-1.414 1.414 3.535 3.535 5.657-5.657-1.414-1.414z"/></svg>
+    </div>
+    <h4 class="text-xl sm:text-2xl font-bold">Mission</h4>
+    <p class="mt-2 text-sm sm:text-base">Create sustainable solutions through community-funded projects.</p>
+  </div>
+  <div class="rounded-xl p-6 text-center shadow bg-white/50 dark:bg-gray-800/50 border border-white/40 dark:border-gray-700">
+    <div class="mx-auto w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center mb-3">
+      <svg class="w-5 h-5 text-indigo-700" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zm1 4h-2v6h2V6zm-2 8h2v2H9v-2z"/></svg>
+    </div>
+    <h4 class="text-xl sm:text-2xl font-bold">Vision</h4>
+    <p class="mt-2 text-sm sm:text-base">A thriving village with education, healthcare, and infrastructure.</p>
+  </div>
+  <div class="rounded-xl p-6 text-center shadow bg-white/50 dark:bg-gray-800/50 border border-white/40 dark:border-gray-700">
+    <div class="mx-auto w-10 h-10 rounded-full bg-yellow-100 flex items-center justify-center mb-3">
+      <svg class="w-5 h-5 text-yellow-700" fill="currentColor" viewBox="0 0 20 20"><path d="M4 3a2 2 0 00-2 2v7a2 2 0 002 2h2v3l3-3h5a2 2 0 002-2V5a2 2 0 00-2-2H4z"/></svg>
+    </div>
+    <h4 class="text-xl sm:text-2xl font-bold">Values</h4>
+    <p class="mt-2 text-sm sm:text-base">Transparency, Community, Compassion, and Trust.</p>
+  </div>
 </section>
 
 <section class="max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-12 text-center">
@@ -78,22 +136,30 @@
         <iframe class="absolute top-0 left-0 w-full h-full rounded-lg" src="https://www.youtube.com/embed/HkuKHwetV6Q" title="Village Video"
             frameborder="0" allowfullscreen></iframe>
     </div>
-    <p class="mt-3 sm:mt-4 text-sm sm:text-base md:text-lg">This is our home. Every frame here tells a story of resilience, unity, and dreams coming
-        true.</p>
+    <p class="mt-3 sm:mt-4 text-sm sm:text-base md:text-lg">Our home tells a story of resilience, unity, and dreams coming true.</p>
 </section>
 
 <section class="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-    <div class="bg-white bg-opacity-20 p-4 sm:p-6 rounded-xl">
-        <h3 class="text-lg sm:text-xl font-bold">"This initiative changed our lives."</h3>
-        <p class="mt-2 italic text-sm sm:text-base">– Ramesh, Local Shopkeeper</p>
-    </div>
-    <div class="bg-white bg-opacity-20 p-4 sm:p-6 rounded-xl">
-        <h3 class="text-lg sm:text-xl font-bold">"I see my village growing every day."</h3>
-        <p class="mt-2 italic text-sm sm:text-base">– Kavita, Volunteer</p>
-    </div>
+  <div class="bg-white/40 dark:bg-gray-800/40 p-6 rounded-xl border border-white/40 dark:border-gray-700">
+    <h3 class="text-lg sm:text-xl font-bold">"This initiative changed our lives."</h3>
+    <p class="mt-2 italic text-sm sm:text-base">– Ramesh, Local Shopkeeper</p>
+  </div>
+  <div class="bg-white/40 dark:bg-gray-800/40 p-6 rounded-xl border border-white/40 dark:border-gray-700">
+    <h3 class="text-lg sm:text-xl font-bold">"I see my village growing every day."</h3>
+    <p class="mt-2 italic text-sm sm:text-base">– Kavita, Volunteer</p>
+  </div>
 </section>
 
-<footer class="text-center py-4 sm:py-6 bg-white bg-opacity-10 mt-8 sm:mt-12">
-    <p class="text-xs sm:text-sm">© 2025 Together for Our Village | Made with ❤️ for our village</p>
-</footer>
+<!-- CTA -->
+<section class="max-w-4xl mx-auto px-4 sm:px-6 py-10 text-center">
+  <div class="rounded-2xl px-6 py-8 bg-gradient-to-r from-green-500 to-teal-500 text-white shadow">
+    <h3 class="text-xl sm:text-2xl font-bold">Join hands to build a brighter village</h3>
+    <p class="mt-2 text-sm sm:text-base opacity-90">Explore campaigns or contact us to collaborate.</p>
+    <div class="mt-5 flex justify-center gap-3">
+      <a href="{% url 'features:campaign_list' %}" class="px-5 py-2 rounded-full bg-white text-green-700 font-semibold hover:bg-green-50">Browse Campaigns</a>
+      <a href="{% url 'features:contact' %}" class="px-5 py-2 rounded-full bg-black/20 border border-white hover:bg-black/10">Get in Touch</a>
+    </div>
+  </div>
+  <p class="text-xs sm:text-sm text-gray-500 mt-4">© {{ now|date:'Y' }} Together for Our Village</p>
+</section>
 {% endblock %}

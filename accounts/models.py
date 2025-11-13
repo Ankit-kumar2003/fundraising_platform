@@ -1,9 +1,10 @@
-from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
+from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.utils import timezone
 import hashlib
 import random
 import string
+import secrets
 
 # Create your models here.
 
@@ -45,6 +46,7 @@ class CustomUser(AbstractUser):
 class OTP(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     otp_hash = models.CharField(max_length=64)
+    salt = models.CharField(max_length=32, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     is_used = models.BooleanField(default=False)
 
@@ -53,8 +55,12 @@ class OTP(models.Model):
         return "".join(random.choices(string.digits, k=6))
 
     @staticmethod
-    def hash_otp(otp):
-        return hashlib.sha256(otp.encode()).hexdigest()
+    def generate_salt():
+        return secrets.token_hex(16)
+
+    @staticmethod
+    def hash_otp(otp, salt):
+        return hashlib.sha256((otp + salt).encode()).hexdigest()
 
     def is_expired(self):
         return (timezone.now() - self.created_at).total_seconds() > 300  # 5 minutes
@@ -62,7 +68,7 @@ class OTP(models.Model):
     def verify_otp(self, otp):
         if self.is_expired() or self.is_used:
             return False
-        return self.otp_hash == self.hash_otp(otp)
+        return self.otp_hash == self.hash_otp(otp, self.salt)
 
     def mark_as_used(self):
         self.is_used = True

@@ -1,0 +1,179 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" class="w-full h-full">
+  <defs>
+    <linearGradient id="skyGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#87CEEB;stop-opacity:0.6" />
+      <stop offset="100%" style="stop-color:#E0F6FF;stop-opacity:0.3" />
+    </linearGradient>
+    <linearGradient id="mountainGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#8B7355;stop-opacity:0.7" />
+      <stop offset="100%" style="stop-color:#A0522D;stop-opacity:0.5" />
+    </linearGradient>
+    <linearGradient id="houseGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#DEB887;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#CD853F;stop-opacity:0.6" />
+    </linearGradient>
+    <linearGradient id="bankGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#F5F5DC;stop-opacity:0.9" />
+      <stop offset="100%" style="stop-color:#D2B48C;stop-opacity:0.7" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Sky background -->
+  <rect width="1200" height="800" fill="url(#skyGradient)" />
+  
+  <!-- Mountains in background -->
+  <path d="M0,400 Q200,300 400,350 T800,320 L1200,340 L1200,800 L0,800 Z" fill="url(#mountainGradient)" />
+  
+  <!-- Rolling hills -->
+  <path d="M0,500 Q300,450 600,480 T1200,460 L1200,800 L0,800 Z" fill="rgba(144,238,144,0.2)" />
+  
+  <!-- Village buildings -->
+  <!-- Community Bank/Funding Center -->
+  <g transform="translate(500,480)">
+    <rect x="0" y="20" width="120" height="80" fill="url(#bankGradient)" rx="8" />
+    <polygon points="-15,20 60,0 135,20" fill="rgba(139,69,19,0.8)" />
+    <!-- Bank columns -->
+    <rect x="15" y="30" width="8" height="50" fill="rgba(255,255,255,0.7)" />
+    <rect x="35" y="30" width="8" height="50" fill="rgba(255,255,255,0.7)" />
+    <rect x="55" y="30" width="8" height="50" fill="rgba(255,255,255,0.7)" />
+    <rect x="75" y="30" width="8" height="50" fill="rgba(255,255,255,0.7)" />
+    <rect x="95" y="30" width="8" height="50" fill="rgba(255,255,255,0.7)" />
+    <!-- Bank door -->
+    <rect x="50" y="60" width="20" height="30" fill="rgba(101,67,33,0.8)" />
+    <!-- Bank sign -->
+    <rect x="25" y="35" width="70" height="15" fill="rgba(70,130,180,0.8)" rx="3" />
+    <text x="60" y="45" text-anchor="middle" font-size="8" font-weight="bold" fill="white">VILLAGE FUND</text>
+  </g>
+  
+  <!-- House 1 -->
+  <g transform="translate(150,520)">
+    <rect x="0" y="40" width="80" height="60" fill="url(#houseGradient)" rx="5" />
+    <polygon points="-10,40 40,10 90,40" fill="rgba(139,69,19,0.8)" />
+    <rect x="15" y="55" width="15" height="25" fill="rgba(101,67,33,0.8)" />
+    <rect x="50" y="55" width="15" height="15" fill="rgba(135,206,235,0.6)" />
+    <!-- Chimney with smoke -->
+    <rect x="65" y="15" width="8" height="25" fill="rgba(139,69,19,0.7)" />
+    <circle cx="69" cy="10" r="3" fill="rgba(200,200,200,0.5)" />
+    <circle cx="67" cy="5" r="2" fill="rgba(200,200,200,0.4)" />
+  </g>
+  
+  <!-- House 2 -->
+  <g transform="translate(280,540)">
+    <rect x="0" y="30" width="70" height="50" fill="url(#houseGradient)" rx="5" />
+    <polygon points="-8,30 35,5 78,30" fill="rgba(139,69,19,0.8)" />
+    <rect x="12" y="45" width="12" height="20" fill="rgba(101,67,33,0.8)" />
+    <rect x="45" y="45" width="12" height="12" fill="rgba(135,206,235,0.6)" />
+    <!-- Garden -->
+    <circle cx="85" cy="70" r="8" fill="rgba(34,139,34,0.5)" />
+    <circle cx="90" cy="75" r="5" fill="rgba(255,0,0,0.6)" />
+  </g>
+  
+  <!-- House 3 -->
+  <g transform="translate(400,530)">
+    <rect x="0" y="35" width="75" height="55" fill="url(#houseGradient)" rx="5" />
+    <polygon points="-9,35 37.5,8 84,35" fill="rgba(139,69,19,0.8)" />
+    <rect x="14" y="50" width="14" height="23" fill="rgba(101,67,33,0.8)" />
+    <rect x="48" y="50" width="14" height="14" fill="rgba(135,206,235,0.6)" />
+    <!-- Solar panels -->
+    <rect x="20" y="12" width="35" height="20" fill="rgba(25,25,112,0.7)" rx="2" />
+  </g>
+  
+  <!-- Trees -->
+  <g transform="translate(100,550)">
+    <rect x="18" y="30" width="8" height="25" fill="rgba(101,67,33,0.4)" />
+    <circle cx="22" cy="25" r="15" fill="rgba(34,139,34,0.3)" />
+  </g>
+  
+  <g transform="translate(350,560)">
+    <rect x="16" y="25" width="6" height="20" fill="rgba(101,67,33,0.4)" />
+    <circle cx="19" cy="22" r="12" fill="rgba(34,139,34,0.3)" />
+  </g>
+  
+  <g transform="translate(500,555)">
+    <rect x="20" y="28" width="10" height="22" fill="rgba(101,67,33,0.4)" />
+    <circle cx="25" cy="23" r="18" fill="rgba(34,139,34,0.3)" />
+  </g>
+  
+  <!-- Community elements -->
+  <!-- Well -->
+  <g transform="translate(250,580)">
+    <circle cx="15" cy="15" r="12" fill="rgba(105,105,105,0.4)" stroke="rgba(169,169,169,0.6)" stroke-width="2" />
+    <rect x="12" y="5" width="6" height="8" fill="rgba(139,69,19,0.4)" />
+  </g>
+  
+  <!-- Path connecting houses -->
+  <path d="M150,600 Q250,590 350,595 T550,590" stroke="rgba(210,180,140,0.4)" stroke-width="8" fill="none" />
+  
+  <!-- Decorative clouds -->
+  <g transform="translate(800,150)" opacity="0.3">
+    <circle cx="0" cy="0" r="20" fill="white" />
+    <circle cx="25" cy="0" r="25" fill="white" />
+    <circle cx="50" cy="0" r="20" fill="white" />
+    <circle cx="12.5" cy="-15" r="15" fill="white" />
+    <circle cx="37.5" cy="-15" r="15" fill="white" />
+  </g>
+  
+  <g transform="translate(200,100)" opacity="0.2">
+    <circle cx="0" cy="0" r="15" fill="white" />
+    <circle cx="20" cy="0" r="20" fill="white" />
+    <circle cx="40" cy="0" r="15" fill="white" />
+    <circle cx="10" cy="-12" r="12" fill="white" />
+    <circle cx="30" cy="-12" r="12" fill="white" />
+  </g>
+  
+  <!-- People figures -->
+  <!-- Person 1 - walking to bank -->
+  <g transform="translate(450,580)">
+    <circle cx="0" cy="-15" r="6" fill="rgba(255,220,177,0.8)" />
+    <rect x="-4" y="-10" width="8" height="15" fill="rgba(70,130,180,0.7)" rx="2" />
+    <rect x="-3" y="5" width="2" height="12" fill="rgba(139,69,19,0.6)" />
+    <rect x="1" y="5" width="2" height="12" fill="rgba(139,69,19,0.6)" />
+    <!-- Briefcase -->
+    <rect x="6" y="-5" width="8" height="6" fill="rgba(101,67,33,0.8)" rx="1" />
+  </g>
+  
+  <!-- Person 2 - at well -->
+  <g transform="translate(265,590)">
+    <circle cx="0" cy="-12" r="5" fill="rgba(255,220,177,0.8)" />
+    <rect x="-3" y="-8" width="6" height="12" fill="rgba(220,20,60,0.7)" rx="2" />
+    <rect x="-2" y="4" width="1.5" height="10" fill="rgba(139,69,19,0.6)" />
+    <rect x="0.5" y="4" width="1.5" height="10" fill="rgba(139,69,19,0.6)" />
+  </g>
+  
+  <!-- Person 3 - farmer -->
+  <g transform="translate(380,590)">
+    <circle cx="0" cy="-14" r="5" fill="rgba(255,220,177,0.8)" />
+    <rect x="-3" y="-10" width="6" height="13" fill="rgba(34,139,34,0.7)" rx="2" />
+    <rect x="-2" y="3" width="1.5" height="11" fill="rgba(139,69,19,0.6)" />
+    <rect x="0.5" y="3" width="1.5" height="11" fill="rgba(139,69,19,0.6)" />
+    <!-- Hat -->
+    <circle cx="0" cy="-19" r="7" fill="rgba(210,180,140,0.6)" />
+  </g>
+  
+  <!-- Funding symbols (coins) floating -->
+  <g transform="translate(600,200)" opacity="0.4">
+    <circle cx="0" cy="0" r="12" fill="#FFD700" />
+    <text x="0" y="4" text-anchor="middle" font-size="14" font-weight="bold" fill="#B8860B">$</text>
+  </g>
+  
+  <g transform="translate(900,250)" opacity="0.35">
+    <circle cx="0" cy="0" r="10" fill="#FFD700" />
+    <text x="0" y="3" text-anchor="middle" font-size="12" font-weight="bold" fill="#B8860B">$</text>
+  </g>
+  
+  <g transform="translate(750,180)" opacity="0.45">
+    <circle cx="0" cy="0" r="11" fill="#FFD700" />
+    <text x="0" y="4" text-anchor="middle" font-size="13" font-weight="bold" fill="#B8860B">$</text>
+  </g>
+  
+  <!-- Market stall -->
+  <g transform="translate(700,550)">
+    <rect x="0" y="20" width="60" height="40" fill="rgba(139,69,19,0.6)" />
+    <polygon points="-5,20 30,10 65,20" fill="rgba(255,0,0,0.6)" />
+    <!-- Goods -->
+    <circle cx="15" cy="35" r="4" fill="rgba(255,165,0,0.7)" />
+    <circle cx="25" cy="35" r="4" fill="rgba(255,0,0,0.7)" />
+    <circle cx="35" cy="35" r="4" fill="rgba(34,139,34,0.7)" />
+    <circle cx="45" cy="35" r="4" fill="rgba(255,255,0,0.7)" />
+  </g>
+</svg>

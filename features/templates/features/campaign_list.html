@@ -31,8 +31,14 @@
                         {{ campaign.progress_percentage|floatformat:0 }}% Complete
                     </div>
                 </div>
-                <a href="{% url 'features:campaign_detail' campaign.id %}"
-                    class="w-full text-center bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full transition-colors text-sm sm:text-base">Donate</a>
+                <div class="space-y-2">
+                    <a href="{% url 'features:campaign_detail' campaign.id %}"
+                        class="w-full text-center bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full transition-colors text-sm sm:text-base block">Donate</a>
+                    <a href="{% url 'features:download_campaign_donations' campaign.id %}"
+                        class="w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full transition-colors text-sm sm:text-base block">
+                        <i class="fas fa-download mr-2"></i>Download Donations List
+                    </a>
+                </div>
             </div>
         </div>
         {% empty %}

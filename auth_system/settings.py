@@ -29,7 +29,7 @@ SECRET_KEY = os.getenv("SECRET_KEY", "your-secret-key-here")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG", "True") == "True"
 
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", ".onrender.com,127.0.0.1,localhost").split(",")
 
 
 # Application definition
@@ -55,6 +55,7 @@ MIDDLEWARE = [
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
+    "accounts.middleware.RateLimitExceededMiddleware",  # Add rate limiting middleware
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
@@ -104,9 +105,15 @@ else:
 AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
+        "OPTIONS": {
+            "user_attributes": ["email", "first_name", "last_name"],
+        }
     },
     {
         "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
+        "OPTIONS": {
+            "min_length": 8,
+        }
     },
     {
         "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
@@ -114,6 +121,9 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
+    {
+        "NAME": "accounts.validators.CustomPasswordValidator",
+    }
 ]
 
 
@@ -147,22 +157,46 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_USER_MODEL = "accounts.CustomUser"
 
 # Email settings
-# Using filebased backend for better performance to prevent timeout issues
-# In production, consider using a service like SendGrid with django-anymail for async email sending
+# Email Configuration
+# In development, show emails in console by default but allow testing SMTP
 if DEBUG:
-    # Development: Show emails in console
-    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+    # Check if we want to test actual email sending in development
+    if os.getenv("TEST_EMAIL_SENDING", "False") == "True":
+        # Development testing: Use SMTP backend for real email delivery
+        EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+        EMAIL_HOST = os.getenv("EMAIL_HOST")
+        EMAIL_PORT = int(os.getenv("EMAIL_PORT", 587))
+        EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS", "True") == "True"
+        EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
+        EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
+    else:
+        # Development: Show emails in console
+        EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 else:
-    # Production: Use filebased backend to avoid blocking requests
-    EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
-    EMAIL_FILE_PATH = os.path.join(BASE_DIR, "sent_emails")
+    # Production: Use SMTP backend for real email delivery
+    EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+    EMAIL_HOST = os.getenv("EMAIL_HOST")
+    EMAIL_PORT = int(os.getenv("EMAIL_PORT", 587))
+    EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS", "True") == "True"
+    EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
+    EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 
-# SMTP settings kept for reference
-# EMAIL_HOST = os.getenv("EMAIL_HOST", "smtp.gmail.com")
-# EMAIL_PORT = int(os.getenv("EMAIL_PORT", 587))
-# EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS", "True") == "True"
-# EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
-# EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
+# Default sender email address
+DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "noreply@fundraisingplatform.com")
+
+# Password reset settings
+PASSWORD_RESET_TIMEOUT = 3600  # Password reset links expire after 1 hour
+
+# Password reset domain and protocol settings
+# In development, use localhost with http
+# In production, use the actual domain with https
+if DEBUG:
+    PASSWORD_RESET_DOMAIN = os.getenv('PASSWORD_RESET_DOMAIN', '127.0.0.1:8000')
+    PASSWORD_RESET_PROTOCOL = 'http'
+else:
+    PASSWORD_RESET_DOMAIN = os.getenv('RENDER_DOMAIN', 'your-domain.onrender.com')
+    PASSWORD_RESET_PROTOCOL = 'https'
+
 
 # Crispy Forms
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
@@ -174,15 +208,21 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',  # Keep default as fallback
 ]
 
-SESSION_COOKIE_AGE = 3600  # 1 hour
-CSRF_COOKIE_AGE = 3600  # 1 hour
+# Session security settings
+SESSION_COOKIE_AGE = int(os.getenv("SESSION_COOKIE_AGE", 3600))  # Default to 1 hour
+CSRF_COOKIE_AGE = int(os.getenv("CSRF_COOKIE_AGE", 3600))  # Default to 1 hour
+SESSION_EXPIRE_AT_BROWSER_CLOSE = os.getenv("SESSION_EXPIRE_AT_BROWSER_CLOSE", "False") == "True"
+SESSION_COOKIE_SAMESITE = 'Lax'  # Mitigate CSRF attacks
+CSRF_COOKIE_SAMESITE = 'Lax'  # Mitigate CSRF attacks
+CSRF_COOKIE_HTTPONLY = True
+SESSION_COOKIE_HTTPONLY = True
 
-# CSRF trusted origins
 CSRF_TRUSTED_ORIGINS = [
     "http://127.0.0.1:8000",
     "https://127.0.0.1:8000",
     "http://localhost:8000",
     "https://localhost:8000",
+    "https://*.onrender.com",
 ]
 
 # Add RENDER_EXTERNAL_URL to CSRF_TRUSTED_ORIGINS and ALLOWED_HOSTS if it exists
@@ -192,6 +232,10 @@ if os.getenv("RENDER_EXTERNAL_URL"):
     # Extract domain name from RENDER_URL and add to ALLOWED_HOSTS
     RENDER_DOMAIN = RENDER_URL.replace('https://', '').replace('http://', '')
     ALLOWED_HOSTS.append(RENDER_DOMAIN)
+
+# Respect Render's proxy headers for HTTPS and host resolution
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+USE_X_FORWARDED_HOST = True
 
 # Security cookie settings
 SESSION_COOKIE_HTTPONLY = True
@@ -208,12 +252,22 @@ if not DEBUG:
 
 # Security settings
 # Security settings for production
-SESSION_COOKIE_SECURE = os.getenv('SESSION_COOKIE_SECURE', str(not DEBUG)) == 'True'
-CSRF_COOKIE_SECURE = os.getenv('CSRF_COOKIE_SECURE', str(not DEBUG)) == 'True'
-SECURE_SSL_REDIRECT = os.getenv('SECURE_SSL_REDIRECT', 'False') == 'True'
-SECURE_HSTS_SECONDS = int(os.getenv('SECURE_HSTS_SECONDS', '31536000' if not DEBUG else '0'))  # 1 year for production
-SECURE_HSTS_INCLUDE_SUBDOMAINS = os.getenv('SECURE_HSTS_INCLUDE_SUBDOMAINS', str(not DEBUG)) == 'True'
-SECURE_HSTS_PRELOAD = os.getenv('SECURE_HSTS_PRELOAD', str(not DEBUG)) == 'True'
+if DEBUG:
+    # Disable SSL settings for development
+    SESSION_COOKIE_SECURE = False
+    CSRF_COOKIE_SECURE = False
+    SECURE_SSL_REDIRECT = False
+    SECURE_HSTS_SECONDS = 0
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = False
+    SECURE_HSTS_PRELOAD = False
+else:
+    # Production security settings
+    SESSION_COOKIE_SECURE = os.getenv('SESSION_COOKIE_SECURE', 'True') == 'True'
+    CSRF_COOKIE_SECURE = os.getenv('CSRF_COOKIE_SECURE', 'True') == 'True'
+    SECURE_SSL_REDIRECT = os.getenv('SECURE_SSL_REDIRECT', 'True') == 'True'
+    SECURE_HSTS_SECONDS = int(os.getenv('SECURE_HSTS_SECONDS', '31536000'))  # 1 year
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = os.getenv('SECURE_HSTS_INCLUDE_SUBDOMAINS', 'True') == 'True'
+    SECURE_HSTS_PRELOAD = os.getenv('SECURE_HSTS_PRELOAD', 'True') == 'True'
 
 # Password hashers for consistent password handling between environments
 PASSWORD_HASHERS = [

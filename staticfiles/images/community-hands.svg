@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" class="w-full h-full">
+  <defs>
+    <radialGradient id="handGradient" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#FFE4B5;stop-opacity:0.6" />
+      <stop offset="100%" style="stop-color:#DEB887;stop-opacity:0.3" />
+    </radialGradient>
+    <linearGradient id="heartGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#FF6B6B;stop-opacity:0.4" />
+      <stop offset="100%" style="stop-color:#FF8E8E;stop-opacity:0.2" />
+    </linearGradient>
+    <radialGradient id="coinGradient" cx="30%" cy="30%" r="70%">
+      <stop offset="0%" style="stop-color:#FFD700;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#FFA500;stop-opacity:0.4" />
+    </radialGradient>
+  </defs>
+  
+  <!-- Background circles for depth -->
+  <circle cx="400" cy="300" r="250" fill="rgba(173,216,230,0.1)" />
+  <circle cx="400" cy="300" r="180" fill="rgba(144,238,144,0.08)" />
+  <circle cx="400" cy="300" r="120" fill="rgba(255,182,193,0.06)" />
+  
+  <!-- Community hands reaching together -->
+  <!-- Hand 1 - from left -->
+  <g transform="translate(150,280) rotate(-15)">
+    <path d="M0,40 Q5,35 10,40 L15,45 Q20,50 25,45 L30,40 Q35,35 40,40 L45,45 Q50,50 45,55 L40,60 L35,65 Q30,70 25,65 L20,60 L15,55 Q10,50 5,55 L0,60 Q-5,65 -10,60 L-15,55 Q-20,50 -15,45 L-10,40 Q-5,35 0,40 Z" fill="url(#handGradient)" />
+    <path d="M45,45 L60,35 Q65,30 70,35 L75,40 Q80,45 75,50 L70,55 Q65,60 60,55 L45,65" fill="url(#handGradient)" />
+  </g>
+  
+  <!-- Hand 2 - from right -->
+  <g transform="translate(650,280) rotate(15) scale(-1,1)">
+    <path d="M0,40 Q5,35 10,40 L15,45 Q20,50 25,45 L30,40 Q35,35 40,40 L45,45 Q50,50 45,55 L40,60 L35,65 Q30,70 25,65 L20,60 L15,55 Q10,50 5,55 L0,60 Q-5,65 -10,60 L-15,55 Q-20,50 -15,45 L-10,40 Q-5,35 0,40 Z" fill="url(#handGradient)" />
+    <path d="M45,45 L60,35 Q65,30 70,35 L75,40 Q80,45 75,50 L70,55 Q65,60 60,55 L45,65" fill="url(#handGradient)" />
+  </g>
+  
+  <!-- Hand 3 - from bottom -->
+  <g transform="translate(400,450) rotate(90)">
+    <path d="M0,40 Q5,35 10,40 L15,45 Q20,50 25,45 L30,40 Q35,35 40,40 L45,45 Q50,50 45,55 L40,60 L35,65 Q30,70 25,65 L20,60 L15,55 Q10,50 5,55 L0,60 Q-5,65 -10,60 L-15,55 Q-20,50 -15,45 L-10,40 Q-5,35 0,40 Z" fill="url(#handGradient)" />
+    <path d="M45,45 L60,35 Q65,30 70,35 L75,40 Q80,45 75,50 L70,55 Q65,60 60,55 L45,65" fill="url(#handGradient)" />
+  </g>
+  
+  <!-- Hand 4 - from top -->
+  <g transform="translate(400,150) rotate(-90)">
+    <path d="M0,40 Q5,35 10,40 L15,45 Q20,50 25,45 L30,40 Q35,35 40,40 L45,45 Q50,50 45,55 L40,60 L35,65 Q30,70 25,65 L20,60 L15,55 Q10,50 5,55 L0,60 Q-5,65 -10,60 L-15,55 Q-20,50 -15,45 L-10,40 Q-5,35 0,40 Z" fill="url(#handGradient)" />
+    <path d="M45,45 L60,35 Q65,30 70,35 L75,40 Q80,45 75,50 L70,55 Q65,60 60,55 L45,65" fill="url(#handGradient)" />
+  </g>
+  
+  <!-- Central heart symbol -->
+  <g transform="translate(400,300)">
+    <path d="M0,-15 C-8,-25 -20,-25 -20,-10 C-20,0 0,20 0,20 C0,20 20,0 20,-10 C20,-25 8,-25 0,-15 Z" fill="url(#heartGradient)" />
+  </g>
+  
+  <!-- Floating coins representing funding -->
+  <g transform="translate(300,200)" opacity="0.6">
+    <circle cx="0" cy="0" r="12" fill="url(#coinGradient)" />
+    <text x="0" y="4" text-anchor="middle" font-size="14" font-weight="bold" fill="#B8860B">$</text>
+  </g>
+  
+  <g transform="translate(500,180)" opacity="0.5">
+    <circle cx="0" cy="0" r="10" fill="url(#coinGradient)" />
+    <text x="0" y="3" text-anchor="middle" font-size="12" font-weight="bold" fill="#B8860B">$</text>
+  </g>
+  
+  <g transform="translate(350,400)" opacity="0.4">
+    <circle cx="0" cy="0" r="8" fill="url(#coinGradient)" />
+    <text x="0" y="3" text-anchor="middle" font-size="10" font-weight="bold" fill="#B8860B">$</text>
+  </g>
+  
+  <g transform="translate(450,420)" opacity="0.7">
+    <circle cx="0" cy="0" r="11" fill="url(#coinGradient)" />
+    <text x="0" y="4" text-anchor="middle" font-size="13" font-weight="bold" fill="#B8860B">$</text>
+  </g>
+  
+  <!-- Decorative stars for community spirit -->
+  <g transform="translate(250,150)" opacity="0.3">
+    <path d="M0,-8 L2,-2 L8,-2 L3,2 L5,8 L0,4 L-5,8 L-3,2 L-8,-2 L-2,-2 Z" fill="#FFD700" />
+  </g>
+  
+  <g transform="translate(550,120)" opacity="0.25">
+    <path d="M0,-6 L1.5,-1.5 L6,-1.5 L2.25,1.5 L3.75,6 L0,3 L-3.75,6 L-2.25,1.5 L-6,-1.5 L-1.5,-1.5 Z" fill="#FFD700" />
+  </g>
+  
+  <g transform="translate(200,400)" opacity="0.2">
+    <path d="M0,-5 L1.25,-1.25 L5,-1.25 L1.875,1.25 L3.125,5 L0,2.5 L-3.125,5 L-1.875,1.25 L-5,-1.25 L-1.25,-1.25 Z" fill="#FFD700" />
+  </g>
+  
+  <g transform="translate(600,380)" opacity="0.35">
+    <path d="M0,-7 L1.75,-1.75 L7,-1.75 L2.625,1.75 L4.375,7 L0,3.5 L-4.375,7 L-2.625,1.75 L-7,-1.75 L-1.75,-1.75 Z" fill="#FFD700" />
+  </g>
+  
+  <!-- Subtle connecting lines showing unity -->
+  <path d="M220,320 Q300,280 380,320" stroke="rgba(100,149,237,0.2)" stroke-width="2" fill="none" stroke-dasharray="5,5" />
+  <path d="M580,320 Q500,280 420,320" stroke="rgba(100,149,237,0.2)" stroke-width="2" fill="none" stroke-dasharray="5,5" />
+  <path d="M400,220 Q360,260 400,280" stroke="rgba(100,149,237,0.2)" stroke-width="2" fill="none" stroke-dasharray="5,5" />
+  <path d="M400,380 Q440,340 400,320" stroke="rgba(100,149,237,0.2)" stroke-width="2" fill="none" stroke-dasharray="5,5" />
+</svg>

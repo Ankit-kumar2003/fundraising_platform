@@ -75,24 +75,52 @@ The application should now be running at http://127.0.0.1:8000/
 
 ## Deployment to Render
 
-### 1. Set up a PostgreSQL database on Render
-Create a new PostgreSQL database instance on Render and note the connection URL.
+This project includes a ready-to-use Render blueprint (`render.yaml`). You can deploy via the Render dashboard or CLI.
 
-### 2. Configure environment variables on Render
-Add the following environment variables to your Render deployment:
+### Option A: One-click deploy from `render.yaml`
+1. Ensure your code is pushed to GitHub.
+2. In Render, create a new Web Service and select “Use existing Render YAML”.
+3. Point to your repo containing `render.yaml`.
+4. Render provisions a free Postgres DB and a free web service automatically.
+
+The blueprint config includes:
+- Build: `pip install -r requirements.txt && python manage.py collectstatic --noinput && python manage.py migrate --noinput`
+- Start: `gunicorn auth_system.wsgi:application --bind 0.0.0.0:$PORT`
+- Env vars: `DJANGO_SETTINGS_MODULE`, `SECRET_KEY` (generated), `DEBUG=False`, `ALLOWED_HOSTS=.onrender.com,localhost,127.0.0.1`, `CSRF_TRUSTED_ORIGINS=https://*.onrender.com`
+- Routes: static files rewrite for `/static/`
+
+### Option B: Manual setup
+1. Create a PostgreSQL database in Render and copy its `DATABASE_URL`.
+2. Create a Web Service pointing to your GitHub repo.
+3. Set environment variables:
 ```
 SECRET_KEY=your-production-secret-key
 DEBUG=False
-ALLOWED_HOSTS=your-domain.onrender.com
+ALLOWED_HOSTS=.onrender.com,localhost,127.0.0.1
+CSRF_TRUSTED_ORIGINS=https://*.onrender.com
 DATABASE_URL=your-render-postgresql-url
 SECURE_SSL_REDIRECT=True
 ```
+4. Build command: `./build.sh` or the inline command from the blueprint above.
+5. Start command: `gunicorn auth_system.wsgi:application --bind 0.0.0.0:$PORT`
 
-### 3. Configure build settings
-Render will automatically use the `build.sh` script and `runtime.txt` to set up your environment.
+### Notes
+- Static files are served via WhiteNoise in production.
+- `SECURE_PROXY_SSL_HEADER` and `USE_X_FORWARDED_HOST` are configured for Render’s proxy.
+- Password reset uses HTTPS in production and respects `RENDER_EXTERNAL_URL`.
 
-### 4. Configure the web service
-Render will use the `Procfile` to run the application with Gunicorn.
+## Push to GitHub
+Run the following to commit and push all changes:
+```bash
+git add .
+git commit -m "Prepare for Render deployment: settings, render.yaml, docs"
+git push origin main
+```
+
+If your default branch is `master`:
+```bash
+git push origin master
+```
 
 ## Project Structure
 ```

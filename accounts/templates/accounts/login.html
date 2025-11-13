@@ -18,15 +18,38 @@
                 <p class="text-blue-200 text-center mt-2 text-sm">💰 Join thousands making a difference in communities worldwide</p>
             </div>
             <div class="px-6 py-8">
+                <style>
+                    .input-with-icon { position: relative; }
+                    .input-with-icon svg { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; color: #9CA3AF; }
+                    .input-with-icon input { padding-left: 2.25rem; }
+                    .toggle-btn { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: #9CA3AF; }
+                    .toggle-btn:hover { color: #4B5563; }
+                </style>
                 <form method="post" class="space-y-6">
                     {% csrf_token %}
+                    
+                    <!-- Display non-field errors -->
+                    {% if form.non_field_errors %}
+                        <div class="p-4 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm" role="alert" aria-live="polite">
+                            {% for error in form.non_field_errors %}
+                                <p class="mb-1">{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    
                     <div>
                         <label for="{{ form.username.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
                             {{ form.username.label }}
                         </label>
-                        {{ form.username }}
+                        <div class="input-with-icon">
+                            <!-- mail icon -->
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8m-18 8h18a2 2 0 002-2V6a2 2 0 00-2-2H3a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                            </svg>
+                            {{ form.username }}
+                        </div>
                         {% if form.username.errors %}
-                            <div class="mt-1 text-sm text-red-600">
+                            <div class="mt-1 text-sm text-red-600" role="alert" aria-live="polite">
                                 {% for error in form.username.errors %}
                                     <p>{{ error }}</p>
                                 {% endfor %}
@@ -37,9 +60,20 @@
                         <label for="{{ form.password.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
                             {{ form.password.label }}
                         </label>
-                        {{ form.password }}
+                        <div class="input-with-icon">
+                            <!-- lock icon -->
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c1.657 0 3 1.343 3 3v4H9v-4c0-1.657 1.343-3 3-3zm6-5a6 6 0 10-12 0v4h12V6z" />
+                            </svg>
+                            {{ form.password }}
+                            <button type="button" id="toggleLoginPassword" class="toggle-btn" aria-label="Show or hide password">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+                                    <path d="M12 5c-7 0-10 7-10 7s3 7 10 7 10-7 10-7-3-7-10-7zm0 12a5 5 0 110-10 5 5 0 010 10z"/>
+                                </svg>
+                            </button>
+                        </div>
                         {% if form.password.errors %}
-                            <div class="mt-1 text-sm text-red-600">
+                            <div class="mt-1 text-sm text-red-600" role="alert" aria-live="polite">
                                 {% for error in form.password.errors %}
                                     <p>{{ error }}</p>
                                 {% endfor %}
@@ -91,4 +125,22 @@
         </div>
     </div>
 </div>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const toggleBtn = document.getElementById('toggleLoginPassword');
+        if (toggleBtn) {
+            toggleBtn.addEventListener('click', function() {
+                const pwdInput = document.querySelector('input[type="password"]');
+                if (!pwdInput) return;
+                const isPassword = pwdInput.getAttribute('type') === 'password';
+                pwdInput.setAttribute('type', isPassword ? 'text' : 'password');
+                toggleBtn.classList.toggle('text-gray-700');
+            });
+        }
+    });
+</script>
+
+
 {% endblock %}

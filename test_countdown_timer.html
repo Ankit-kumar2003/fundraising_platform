@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown Timer Test</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 600px;
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .countdown-timer {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 0.9em;
+            color: #666;
+            font-weight: 500;
+        }
+        .countdown-active {
+            color: #d9534f;
+            font-weight: bold;
+            animation: pulse 1s ease-in-out infinite;
+        }
+        .resend-button button.disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+            pointer-events: none;
+            opacity: 0.7;
+        }
+        .resend-section {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            text-align: center;
+        }
+        .resend-button {
+            margin-top: 1rem;
+        }
+        .resend-button button {
+            min-width: 150px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .info-message {
+            background-color: #e3f2fd;
+            color: #1976d2;
+            padding: 10px 15px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+            border-left: 4px solid #1976d2;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        .alert-success {
+            color: #155724;
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+            padding: 10px 15px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>OTP Countdown Timer Test</h2>
+        
+        <!-- This section demonstrates the countdown timer functionality -->
+        <div class="resend-section">
+            <div class="info-message">
+                <i class="fas fa-info-circle"></i> This is a test of the animated countdown timer functionality.
+            </div>
+            
+            <form id="resendOtpForm" method="post">
+                <div class="resend-button">
+                    <button type="submit" id="resendLink" class="btn btn-secondary btn-lg">
+                        <i class="fas fa-redo-alt"></i> Resend OTP
+                    </button>
+                </div>
+            </form>
+            
+            <div class="countdown-timer" id="countdownTimer">
+                <!-- Countdown timer will appear here -->
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // References to DOM elements
+            const resendForm = document.getElementById('resendOtpForm');
+            const resendLink = document.getElementById('resendLink');
+            const countdownTimer = document.getElementById('countdownTimer');
+            
+            // Test with a shorter countdown for demonstration (15 seconds)
+            let testCooldownSeconds = 15;
+            
+            // Start countdown when page loads
+            startCountdown(testCooldownSeconds);
+            
+            // Add submit event listener to resend form
+            if (resendForm) {
+                resendForm.addEventListener('submit', function(e) {
+                    e.preventDefault(); // Prevent form submission for this test
+                    
+                    // Simulate resending OTP
+                    alert('OTP sent successfully! Countdown will restart.');
+                    
+                    // Restart countdown
+                    startCountdown(testCooldownSeconds);
+                });
+            }
+            
+            function startCountdown(seconds) {
+                // Always show the countdown
+                if (!countdownTimer) return;
+                
+                // Show initial state
+                if (seconds <= 0) {
+                    countdownTimer.innerHTML = '<i class="fas fa-check-circle"></i> OTP has been sent to your email';
+                    countdownTimer.classList.remove('countdown-active');
+                    
+                    // Enable resend button
+                    if (resendLink) {
+                        resendLink.classList.remove('disabled');
+                    }
+                    return;
+                }
+                
+                if (resendLink) {
+                    // Disable the resend button
+                    resendLink.classList.add('disabled');
+                }
+                
+                // Update the countdown timer display
+                updateCountdownDisplay(seconds);
+                
+                // Set interval to update countdown
+                const countdownInterval = setInterval(function() {
+                    seconds--;
+                    
+                    if (seconds <= 0) {
+                        // Clear interval and re-enable resend button
+                        clearInterval(countdownInterval);
+                        countdownTimer.innerHTML = '<i class="fas fa-check-circle"></i> <span class="countdown-active">You can now request a new OTP</span>';
+                        countdownTimer.classList.remove('countdown-active');
+                        
+                        if (resendLink) {
+                            resendLink.classList.remove('disabled');
+                        }
+                        
+                        // Show success message
+                        showResendAvailableMessage();
+                    } else {
+                        // Update countdown display
+                        updateCountdownDisplay(seconds);
+                    }
+                }, 1000);
+            }
+            
+            function updateCountdownDisplay(seconds) {
+                if (!countdownTimer) return;
+                
+                const minutes = Math.floor(seconds / 60);
+                const remainingSeconds = seconds % 60;
+                const formattedTime = minutes > 0 
+                    ? `${minutes}m ${remainingSeconds}s` 
+                    : `${remainingSeconds}s`;
+                
+                // More prominent and animated countdown display
+                countdownTimer.innerHTML = `
+                    <i class="fas fa-clock fa-spin"></i> <strong>New OTP available in:</strong> 
+                    <span class="countdown-active" style="font-size: 1.3em; display: inline-block;">${formattedTime}</span>
+                `;
+                
+                // Force reflow to ensure animation works
+                countdownTimer.classList.remove('countdown-active');
+                void countdownTimer.offsetWidth; // Trigger reflow
+                countdownTimer.classList.add('countdown-active');
+            }
+            
+            function showResendAvailableMessage() {
+                // Create or update a message indicating resend is available
+                let messageContainer = document.getElementById('resendAvailableMessage');
+                
+                if (!messageContainer) {
+                    messageContainer = document.createElement('div');
+                    messageContainer.id = 'resendAvailableMessage';
+                    messageContainer.className = 'alert alert-success';
+                    messageContainer.role = 'alert';
+                    
+                    const resendSection = document.querySelector('.resend-section');
+                    if (resendSection) {
+                        resendSection.insertBefore(messageContainer, countdownTimer);
+                    }
+                }
+                
+                messageContainer.innerHTML = '<i class="fas fa-check-circle"></i> You can now request a new OTP.';
+            }
+        });
+    </script>
+</body>
+</html>

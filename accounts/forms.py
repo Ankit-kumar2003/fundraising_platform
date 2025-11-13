@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm
+from django.utils import timezone
 from .models import CustomUser, OTP
 
 
@@ -68,10 +69,33 @@ class CustomLoginForm(AuthenticationForm):
                 user = CustomUser.objects.get(email=email)
                 if not user.is_active:
                     raise forms.ValidationError(
-                        "Please verify your email first.",
+                        "Your account is not verified yet. Please check your email for verification instructions.",
                         code="inactive",
                     )
+                
+                # Check for account lockout
+                lockout_duration = 300  # 5 minutes in seconds
+                if (user.failed_login_attempts >= 5 and 
+                    user.last_failed_login and 
+                    (timezone.now() - user.last_failed_login).total_seconds() < lockout_duration):
+                    remaining_time = int(lockout_duration - (timezone.now() - user.last_failed_login).total_seconds())
+                    raise forms.ValidationError(
+                        f"Account is locked. Please try again after {remaining_time} seconds.",
+                        code="locked",
+                    )
             except CustomUser.DoesNotExist:
+                # Don't raise an error here - we'll handle it in the view with a more specific message
                 pass
 
-        return super().clean()
+        try:
+            # Call super().clean() to perform the actual authentication check
+            return super().clean()
+        except forms.ValidationError as e:
+            # Customize the default authentication error message
+            if 'invalid_login' in e.code:
+                # This will be caught and handled in the view with more specific information
+                raise forms.ValidationError(
+                    "Invalid email or password.",
+                    code="invalid_login",
+                )
+            raise
