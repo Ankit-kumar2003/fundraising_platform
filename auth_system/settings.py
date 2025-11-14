@@ -91,13 +91,14 @@ if os.getenv("DATABASE_URL"):
     }
 else:
     # Development database (SQLite)
-   DATABASES = {
+  DATABASES = {
     "default": dj_database_url.parse(
         os.getenv("DATABASE_URL"),
         conn_max_age=600,
-        ssl_require=True
+        ssl_require=False
     )
 }
+
 
 
 
