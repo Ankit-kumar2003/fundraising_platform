@@ -85,24 +85,22 @@ WSGI_APPLICATION = "auth_system.wsgi.application"
 
 # Database configuration
 if os.getenv("DATABASE_URL"):
-    # Production database (PostgreSQL on Render) with SSL and connection pooling
+    # Production: Render PostgreSQL with SSL
     DATABASES = {
         "default": dj_database_url.parse(
             os.getenv("DATABASE_URL"),
             conn_max_age=600,
-            ssl_require=True,
+            ssl_require=True
         )
     }
 else:
-    # Development database (SQLite)
-  DATABASES = {
-    "default": dj_database_url.parse(
-        os.getenv("DATABASE_URL"),
-        conn_max_age=600,
-        ssl_require=True
-    )
-}
-
+    # Development: SQLite
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
+    }
 
 
 
