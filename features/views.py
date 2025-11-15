@@ -264,14 +264,28 @@ def contact(request):
     expected = request.session.get("contact_captcha", None)
     form = ContactForm(request.POST, request.FILES, expected_captcha=expected)
 
+    # Ensure these are available for any re-render paths
+    captcha_question = f"{a} + {b}"
+    instructions = "Please correct the highlighted fields."
+
     if form.is_valid():
         data = form.cleaned_data
         # Determine admin recipient
-        admin_recipient = getattr(settings, "ADMIN_CONTACT_EMAIL", None) or getattr(settings, "EMAIL_HOST_USER", None) or getattr(settings, "DEFAULT_FROM_EMAIL", None)
+        admin_recipient = (
+            getattr(settings, "ADMIN_CONTACT_EMAIL", None)
+            or getattr(settings, "EMAIL_HOST_USER", None)
+            or getattr(settings, "DEFAULT_FROM_EMAIL", None)
+        )
         from_email = getattr(settings, "DEFAULT_FROM_EMAIL", getattr(settings, "EMAIL_HOST_USER", None))
+
         if not admin_recipient:
             messages.error(request, "Admin contact email is not configured.")
-            return render(request, "features/contact.html", {"form": form, "instructions": instructions, "captcha_question": captcha_question})
+            return render(
+                request,
+                "features/contact.html",
+                {"form": form, "instructions": instructions, "captcha_question": captcha_question},
+            )
+
         # Compose admin email
         ticket_id = uuid.uuid4().hex[:8].upper()
         admin_subject = f"[Contact #{ticket_id}] {data.get('subject') or 'No subject'}"
@@ -292,6 +306,7 @@ def contact(request):
             [admin_recipient],
             reply_to=[data["email"]],
         )
+
         # Robust attachment handling
         attachment = data.get("attachment")
         if attachment:
@@ -303,8 +318,9 @@ def contact(request):
                 filename = os.path.basename(getattr(attachment, "name", "attachment"))
                 guessed = mimetypes.guess_type(filename)[0]
                 ct = getattr(attachment, "content_type", None)
-                content_type = ct if (ct and ct != "application/octet-stream") else (guessed or "application/pdf" if filename.lower().endswith(".pdf") else "application/octet-stream")
-                # Prefer file-path attach when available (TemporaryUploadedFile)
+                content_type = ct if (ct and ct != "application/octet-stream") else (
+                    guessed or "application/pdf" if filename.lower().endswith(".pdf") else "application/octet-stream"
+                )
                 if hasattr(attachment, "temporary_file_path"):
                     admin_email.attach_file(attachment.temporary_file_path(), mimetype=content_type)
                 else:
@@ -321,9 +337,17 @@ def contact(request):
             except Exception as e:
                 logger.error("Failed to attach file to admin email: %s", e, exc_info=True)
                 messages.warning(request, "Attachment couldn't be added. Your message was sent without the file.")
-        # Send admin email
-        admin_email.send(fail_silently=False)
-        # Send acknowledgment to user
+
+        # Send admin email safely
+        admin_sent = True
+        try:
+            admin_email.send(fail_silently=False)
+        except Exception as e:
+            admin_sent = False
+            logger.error("Admin email send failed: %s", e, exc_info=True)
+            messages.warning(request, "We couldn't deliver your message to support at the moment.")
+
+        # Send acknowledgment to user (never blocks the request)
         ack_subject = f"We received your message (Ticket {ticket_id})"
         ack_body = (
             f"Hello {data['name']},\n\n"
@@ -336,18 +360,24 @@ def contact(request):
         )
         ack_email = EmailMessage(ack_subject, ack_body, from_email, [data["email"]])
         ack_email.send(fail_silently=True)
+
         # Clear captcha session
         request.session.pop("contact_captcha_a", None)
         request.session.pop("contact_captcha_b", None)
         request.session.pop("contact_captcha", None)
-        messages.success(request, "Your message has been sent. We've emailed a confirmation.")
+
+        if admin_sent:
+            messages.success(request, "Your message has been sent. We've emailed a confirmation.")
+        else:
+            messages.success(request, "We received your submission. We've emailed a confirmation.")
+
         return redirect("features:contact")
 
     # Invalid form: re-render with errors
     return render(
         request,
         "features/contact.html",
-        {"form": form, "captcha_question": f"{a} + {b}", "instructions": "Please correct the highlighted fields."},
+        {"form": form, "captcha_question": captcha_question, "instructions": instructions},
     )
 
 
