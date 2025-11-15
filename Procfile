@@ -1,1 +1,1 @@
-web: gunicorn auth_system.wsgi:application --timeout 120
+web: gunicorn auth_system.wsgi:application --workers 1 --threads 4 --timeout 60 --max-requests 200 --max-requests-jitter 50

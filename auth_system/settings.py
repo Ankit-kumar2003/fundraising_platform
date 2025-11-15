@@ -179,13 +179,18 @@ if DEBUG:
         # Development: Show emails in console
         EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 else:
-    # Production: Use SMTP backend for real email delivery
-    EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-    EMAIL_HOST = os.getenv("EMAIL_HOST")
-    EMAIL_PORT = int(os.getenv("EMAIL_PORT", 587))
-    EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS", "True") == "True"
-    EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
-    EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
+    # Production: Prefer SMTP if configured; otherwise fallback to console to avoid request hangs
+    EMAIL_TIMEOUT = int(os.getenv("EMAIL_TIMEOUT", 10))
+    if os.getenv("EMAIL_HOST"):
+        EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+        EMAIL_HOST = os.getenv("EMAIL_HOST")
+        EMAIL_PORT = int(os.getenv("EMAIL_PORT", 587))
+        EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS", "True") == "True"
+        EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
+        EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
+    else:
+        # Safe fallback when SMTP is not set up yet
+        EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 # Default sender email address
 DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "noreply@fundraisingplatform.com")
